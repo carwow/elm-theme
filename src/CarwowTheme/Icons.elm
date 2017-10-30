@@ -27,7 +27,7 @@ icon iconName iconProperties =
             " inline-icon--" ++ iconProperties.colouring
 
         colourClass =
-            " inline-icon__" ++ iconProperties.colouring ++ "--" ++ iconProperties.colour
+            " inline-icon--" ++ iconProperties.colour
 
         sizeClass =
             " inline-icon--" ++ iconProperties.size
