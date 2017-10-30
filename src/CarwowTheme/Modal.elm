@@ -14,7 +14,6 @@ import CarwowTheme.Icons exposing (icon)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import CarwowTheme.ModalPorts exposing (fixScroll)
 
 
 {-| Placeholder
@@ -77,7 +76,7 @@ update msg model =
                 ( { model | isOpen = nextIsOpen }, Cmd.none )
 
         SwitchModal isOpen ->
-            ( { model | isOpen = isOpen }, fixScroll isOpen )
+            ( { model | isOpen = isOpen }, Cmd.none )
 
 
 {-| Placeholder
