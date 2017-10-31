@@ -129,14 +129,13 @@ standardFilterView label selectedIcon items =
 {-| Placeholder
 -}
 filterView : String -> String -> String -> List (Html.Html msg) -> Html.Html msg
-filterView label selectedFiltersLabel selectedIcon content =
+filterView label selectedFiltersLabel filterIcon content =
     li [ class "filter" ]
         [ div
             [ class "filter__tooltip tooltip tooltip--no-border" ]
             [ div [ class "tooltip__label" ]
                 [ div [ class "filter__icon" ]
-                    [
-                          icon selectedIcon { size = "small", colour = "dark-grey", colouring = "outline" }
+                    [ icon filterIcon { size = "small", colour = "dark-grey", colouring = "outline" }
                     ]
                     , div[]
                     [
