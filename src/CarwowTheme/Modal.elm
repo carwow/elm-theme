@@ -1,4 +1,4 @@
-module CarwowTheme.Modal exposing (ModalProperties, Model, Msg(SwitchModal), PaddingStyle, init, linkView, subscriptions, update, view)
+module CarwowTheme.Modal exposing (ModalProperties, Model, Msg(SwitchModal), PaddingStyle(NoPadding, DefaultPadding), init, linkView, subscriptions, update, view)
 
 {-| Displays modal window
 
