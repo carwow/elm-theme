@@ -53,13 +53,15 @@ select :
     -> List (Html.Html msgType)
     -> String
     -> (String -> msgType)
+    -> Bool
     -> Html.Html msgType
-select id options value msg =
+select id options value msg isDisabled =
     Html.div [ Html.Attributes.class "select" ]
         [ Html.select
             [ Html.Attributes.id id
             , Html.Attributes.value value
             , onChange msg
+            , disabled isDisabled
             ]
             options
         ]
