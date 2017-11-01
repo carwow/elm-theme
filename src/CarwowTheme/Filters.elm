@@ -37,7 +37,7 @@ select id label help_message options value msg =
                     ]
                 ]
             ]
-        , CarwowTheme.Inputs.select id options value msg
+        , CarwowTheme.Inputs.select id options value msg False
         ]
     ]
 

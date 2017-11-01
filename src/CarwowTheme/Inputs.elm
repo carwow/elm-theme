@@ -20,7 +20,7 @@ module CarwowTheme.Inputs exposing (checkbox, select, option)
 -}
 
 import Html exposing (Html, input, label, text, div, select)
-import Html.Attributes exposing (id, type_, class, for)
+import Html.Attributes exposing (id, type_, class, for, disabled)
 import Html.Events exposing (onCheck, onInput, targetValue)
 import Json.Decode exposing (float, map, map2, succeed)
 
