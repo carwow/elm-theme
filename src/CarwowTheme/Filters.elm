@@ -88,8 +88,8 @@ filterGroup items =
 
 {-| Placeholder
 -}
-standardFilterView : String -> List (FilterGroupItem msg) -> Html.Html msg
-standardFilterView label items =
+standardFilterView : String -> String -> List (FilterGroupItem msg) ->  Html.Html msg
+standardFilterView label selectedIcon items =
     let
         itemsCount =
             List.length items
@@ -121,32 +121,40 @@ standardFilterView label items =
                 firstSelectedFilter
     in
         if itemsCount > 1 then
-            filterView label selectedFiltersLabel content
+            filterView label selectedFiltersLabel selectedIcon content
         else
             text ""
 
 
 {-| Placeholder
 -}
-filterView : String -> String -> List (Html.Html msg) -> Html.Html msg
-filterView label selectedFiltersLabel content =
+filterView : String -> String -> String -> List (Html.Html msg) -> Html.Html msg
+filterView label selectedFiltersLabel filterIcon content =
     li [ class "filter" ]
         [ div
             [ class "filter__tooltip tooltip tooltip--no-border" ]
             [ div [ class "tooltip__label" ]
-                [ div [ class "filter__label" ]
-                    [ text label
-                    , icon "caret_down" { size = "x-small", colour = "dark-grey", colouring = "outline" }
+                [ div [ class "filter__icon" ]
+                    [ icon filterIcon { size = "small", colour = "dark-grey", colouring = "outline" }
                     ]
-                , div [ class "filter__current-selection" ] [ text selectedFiltersLabel ]
+                    , div[]
+                    [
+                    div [ class "filter__label" ]
+                        [ text label
+                        , icon "caret_down" { size = "xx-small", colour = "dark-grey", colouring = "outline" }
+                        ]
+                        , div [ class "filter__current-selection" ] [ text selectedFiltersLabel ]
+                    ]
                 ]
             , div
                 [ class "tooltip-dropdown tooltip-dropdown--bottom" ]
                 [ div [ class "tooltip-dropdown__arrow" ]
                     []
                 , div [ class "tooltip-dropdown__content" ]
-                    [ ul [ class "filter-dropdown__inputs list-unstyled" ]
+                    [ div [ class "tooltip-dropdown__content" ]
+                        [ ul [ class "filter-dropdown__inputs list-unstyled" ]
                         content
+                        ]
                     ]
                 ]
             ]
