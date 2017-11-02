@@ -1,6 +1,7 @@
-module CarwowTheme.Inputs exposing (checkbox, select, option)
+module CarwowTheme.Inputs exposing (checkbox, select, selectWithAttributes, option)
 
 {-| Helpers for user input elements.
+
 
 # Checkbox
 
@@ -45,21 +46,33 @@ checkbox id label value msg =
     ]
 
 
+{-| Select atom with extra attributes
+-}
+selectWithAttributes :
+    List (Html.Html msgType)
+    -> String
+    -> String
+    -> (String -> msgType)
+    -> List (Html.Attribute msgType)
+    -> Html.Html msgType
+selectWithAttributes options value id msg attributes =
+    Html.div [ Html.Attributes.class "select" ]
+        [ Html.select
+            (onChange msg :: Html.Attributes.value value :: Html.Attributes.id id :: attributes)
+            options
+        ]
+
+
 {-| Select atom
 -}
 select :
     List (Html.Html msgType)
     -> String
     -> String
-    -> List (Html.Attribute msgType)
     -> (String -> msgType)
     -> Html.Html msgType
-select options value id attributes msg =
-    Html.div [ Html.Attributes.class "select" ]
-        [ Html.select
-            (onChange msg :: Html.Attributes.value value :: Html.Attributes.id id :: attributes)
-            options
-        ]
+select options value id msg =
+    selectWithAttributes options value id msg []
 
 
 {-| Option atom
