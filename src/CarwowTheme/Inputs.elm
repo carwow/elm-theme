@@ -1,6 +1,16 @@
-module CarwowTheme.Inputs exposing (checkbox, select, option)
+module CarwowTheme.Inputs exposing (checkbox, select, option, InputProperties, setInputProperties)
 
 {-| Helpers for user input elements.
+
+
+# setInputProperties
+
+@docs setInputProperties
+
+
+# InputProperties
+
+@docs InputProperties
 
 
 # Checkbox
@@ -25,7 +35,26 @@ import Html.Events exposing (onCheck, onInput, targetValue)
 import Json.Decode exposing (float, map, map2, succeed)
 
 
-{-| Checbox atom
+{-| Common input properties
+-}
+type alias InputProperties =
+    { id : String
+    , value : String
+    , disabled : Bool
+    }
+
+
+{-| Set properties based on default
+-}
+setInputProperties : InputProperties
+setInputProperties =
+    { id = ""
+    , value = ""
+    , disabled = False
+    }
+
+
+{-| Checkbox atom
 -}
 checkbox :
     String
@@ -49,19 +78,17 @@ checkbox id label value msg =
 {-| Select atom
 -}
 select :
-    String
-    -> List (Html.Html msgType)
-    -> String
+    List (Html.Html msgType)
+    -> InputProperties
     -> (String -> msgType)
-    -> Bool
     -> Html.Html msgType
-select id options value msg isDisabled =
+select options properties msg =
     Html.div [ Html.Attributes.class "select" ]
         [ Html.select
-            [ Html.Attributes.id id
-            , Html.Attributes.value value
+            [ Html.Attributes.id properties.id
+            , Html.Attributes.value properties.value
+            , Html.Attributes.disabled properties.disabled
             , onChange msg
-            , disabled isDisabled
             ]
             options
         ]
