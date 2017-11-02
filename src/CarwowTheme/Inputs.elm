@@ -24,9 +24,9 @@ module CarwowTheme.Inputs exposing (checkbox, select, selectWithAttributes, opti
 
 -}
 
-import Html exposing (Html, input, label, text, div, select)
-import Html.Attributes exposing (id, type_, class, for, disabled)
-import Html.Events exposing (onCheck, onInput, targetValue)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 import Json.Decode exposing (float, map, map2, succeed)
 
 
@@ -34,60 +34,59 @@ import Json.Decode exposing (float, map, map2, succeed)
 -}
 checkbox :
     String
-    -> List (Html.Html msg)
+    -> List (Html msg)
     -> Bool
     -> (Bool -> msg)
-    -> List (Html.Html msg)
-checkbox id label value msg =
-    [ Html.input
-        [ Html.Attributes.id id
-        , Html.Attributes.type_ "checkbox"
-        , Html.Events.onCheck msg
-        , Html.Attributes.checked value
+    -> List (Html msg)
+checkbox cbId cbLabel value msg =
+    [ input
+        [ id cbId
+        , type_ "checkbox"
+        , onCheck msg
+        , checked value
         ]
         []
-    , Html.label [ Html.Attributes.for id ]
-        label
+    , label [ for cbId ]
+        cbLabel
     ]
 
 
 {-| Select atom
 -}
 select :
-    List (Html.Html msgType)
+    List (Html msgType)
     -> String
     -> String
     -> (String -> msgType)
-    -> Html.Html msgType
+    -> Html msgType
 select options value id msg =
     selectWithAttributes options value id msg []
-
 
 
 {-| Select atom with extra attributes
 -}
 selectWithAttributes :
-    List (Html.Html msgType)
+    List (Html msgType)
     -> String
     -> String
     -> (String -> msgType)
-    -> List (Html.Attribute msgType)
-    -> Html.Html msgType
-selectWithAttributes options value id msg attributes =
-    Html.div [ Html.Attributes.class "select" ]
+    -> List (Attribute msgType)
+    -> Html msgType
+selectWithAttributes options selectValue selectId msg attributes =
+    div [ class "select" ]
         [ Html.select
-            (onChange msg :: Html.Attributes.value value :: Html.Attributes.id id :: attributes)
+            (onChange msg :: value selectValue :: id selectId :: attributes)
             options
         ]
 
 
 {-| Option atom
 -}
-option : String -> String -> Html.Html msg
-option value text =
-    Html.option [ Html.Attributes.value value ] [ Html.text text ]
+option : String -> String -> Html msg
+option optionValue optionText =
+    Html.option [ value optionValue ] [ text optionText ]
 
 
-onChange : (String -> value) -> Html.Attribute value
+onChange : (String -> value) -> Attribute value
 onChange tagger =
-    Html.Events.on "change" (map tagger Html.Events.targetValue)
+    on "change" (Json.Decode.map tagger targetValue)
