@@ -1,11 +1,11 @@
-module CarwowTheme.Drawer exposing (Model, Properties, Msg(Toggle), init, view, subscriptions, update)
+module CarwowTheme.Drawer exposing (Model, Properties, Msg(Toggle), Action(Close, Open), init, view, subscriptions, update)
 
 {-| Drawer
 
 
 # Exports
 
-@docs Model, Properties, Msg, init, view, subscriptions, update
+@docs Model, Properties, Msg, init, view, subscriptions, update, Action
 
 -}
 
@@ -20,8 +20,20 @@ import Html.Events exposing (onClick)
 -}
 type alias Model =
     { id : String
-    , open : Bool
+    , state : State
     }
+
+
+type State
+    = Opened
+    | Closed
+
+
+{-| Placeholder
+-}
+type Action
+    = Open
+    | Close
 
 
 {-| Placeholder
@@ -36,7 +48,7 @@ type alias Properties msg =
 -}
 type Msg
     = KeyPressed Keyboard.KeyCode
-    | Toggle Bool
+    | Toggle Action
 
 
 {-| Placeholder
@@ -44,7 +56,7 @@ type Msg
 init : String -> Model
 init id =
     { id = id
-    , open = False
+    , state = Closed
     }
 
 
@@ -53,20 +65,17 @@ init id =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        KeyPressed code ->
-            let
-                open =
-                    case code of
-                        27 ->
-                            False
+        KeyPressed 27 ->
+            ( { model | state = Closed }, Cmd.none )
 
-                        _ ->
-                            model.open
-            in
-                ( { model | open = open }, Cmd.none )
+        KeyPressed _ ->
+            ( model, Cmd.none )
 
-        Toggle open ->
-            ( { model | open = open }, Cmd.none )
+        Toggle Open ->
+            ( { model | state = Opened }, Cmd.none )
+
+        Toggle Close ->
+            ( { model | state = Closed }, Cmd.none )
 
 
 {-| Placeholder
@@ -88,7 +97,7 @@ view model properties toggleOpenMsg toggleCloseMsg =
                 , type_ "radio"
                 , id (model.id ++ "-open")
                 , name model.id
-                , checked model.open
+                , checked (model.state == Opened)
                 , onClick toggleOpenMsg
                 ]
                 []
