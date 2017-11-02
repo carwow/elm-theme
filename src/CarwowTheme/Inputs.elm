@@ -13,6 +13,11 @@ module CarwowTheme.Inputs exposing (checkbox, select, selectWithAttributes, opti
 @docs select
 
 
+# Select with Attributes
+
+@docs selectWithAttributes
+
+
 # Option
 
 @docs option
@@ -46,6 +51,19 @@ checkbox id label value msg =
     ]
 
 
+{-| Select atom
+-}
+select :
+    List (Html.Html msgType)
+    -> String
+    -> String
+    -> (String -> msgType)
+    -> Html.Html msgType
+select options value id msg =
+    selectWithAttributes options value id msg []
+
+
+
 {-| Select atom with extra attributes
 -}
 selectWithAttributes :
@@ -61,18 +79,6 @@ selectWithAttributes options value id msg attributes =
             (onChange msg :: Html.Attributes.value value :: Html.Attributes.id id :: attributes)
             options
         ]
-
-
-{-| Select atom
--}
-select :
-    List (Html.Html msgType)
-    -> String
-    -> String
-    -> (String -> msgType)
-    -> Html.Html msgType
-select options value id msg =
-    selectWithAttributes options value id msg []
 
 
 {-| Option atom
