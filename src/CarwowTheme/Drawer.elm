@@ -1,11 +1,11 @@
-module CarwowTheme.Drawer exposing (Model, Properties, Msg(Toggle), init, view, subscriptions, update)
+module CarwowTheme.Drawer exposing (Model, Properties, Msg(Toggle), Action(Close, Open), init, view, subscriptions, update)
 
 {-| Drawer
 
 
 # Exports
 
-@docs Model, Properties, Msg, init, view, subscriptions, update
+@docs Model, Properties, Msg, init, view, subscriptions, update, Action
 
 -}
 
@@ -20,8 +20,20 @@ import Html.Events exposing (onClick)
 -}
 type alias Model =
     { id : String
-    , visible : Bool
+    , state : State
     }
+
+
+type State
+    = Opened
+    | Closed
+
+
+{-| Placeholder
+-}
+type Action
+    = Open
+    | Close
 
 
 {-| Placeholder
@@ -36,7 +48,7 @@ type alias Properties msg =
 -}
 type Msg
     = KeyPressed Keyboard.KeyCode
-    | Toggle
+    | Toggle Action
 
 
 {-| Placeholder
@@ -44,7 +56,7 @@ type Msg
 init : String -> Model
 init id =
     { id = id
-    , visible = False
+    , state = Closed
     }
 
 
@@ -53,30 +65,23 @@ init id =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        KeyPressed code ->
-            let
-                visible =
-                    case code of
-                        27 ->
-                            False
+        KeyPressed 27 ->
+            ( { model | state = Closed }, Cmd.none )
 
-                        _ ->
-                            model.visible
-            in
-                ( { model | visible = visible }, Cmd.none )
+        KeyPressed _ ->
+            ( model, Cmd.none )
 
-        Toggle ->
-            let
-                isVisible =
-                    not model.visible
-            in
-                ( { model | visible = isVisible }, Cmd.none )
+        Toggle Open ->
+            ( { model | state = Opened }, Cmd.none )
+
+        Toggle Close ->
+            ( { model | state = Closed }, Cmd.none )
 
 
 {-| Placeholder
 -}
-view : Model -> Properties msg -> msg -> Html msg
-view model properties toggleDrawer =
+view : Model -> Properties msg -> msg -> msg -> Html msg
+view model properties toggleOpenMsg toggleCloseMsg =
     let
         closeButton =
             label
@@ -92,8 +97,8 @@ view model properties toggleDrawer =
                 , type_ "radio"
                 , id (model.id ++ "-open")
                 , name model.id
-                , checked model.visible
-                , onClick toggleDrawer
+                , checked (model.state == Opened)
+                , onClick toggleOpenMsg
                 ]
                 []
             , input
@@ -101,7 +106,7 @@ view model properties toggleDrawer =
                 , type_ "radio"
                 , id (model.id ++ "-close")
                 , name model.id
-                , onClick toggleDrawer
+                , onClick toggleCloseMsg
                 ]
                 []
             , div
