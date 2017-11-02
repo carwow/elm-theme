@@ -10,7 +10,7 @@ module CarwowTheme.Filters exposing (select, filterView, standardFilterView, Fil
 -}
 
 import CarwowTheme.Icons exposing (icon)
-import CarwowTheme.Inputs exposing (checkbox, select, setInputProperties)
+import CarwowTheme.Inputs exposing (checkbox, select)
 import Html exposing (div, span, text, ul, li)
 import Html.Attributes exposing (class)
 
@@ -37,7 +37,7 @@ select id label help_message options value msg =
                     ]
                 ]
             ]
-        , CarwowTheme.Inputs.select options { setInputProperties | id = id, value = value } msg
+        , CarwowTheme.Inputs.select options value id [] msg
         ]
     ]
 
