@@ -20,7 +20,7 @@ import Html.Events exposing (onClick)
 -}
 type alias Model =
     { id : String
-    , visible : Bool
+    , open : Bool
     }
 
 
@@ -36,7 +36,7 @@ type alias Properties msg =
 -}
 type Msg
     = KeyPressed Keyboard.KeyCode
-    | Toggle
+    | Toggle Bool
 
 
 {-| Placeholder
@@ -44,7 +44,7 @@ type Msg
 init : String -> Model
 init id =
     { id = id
-    , visible = False
+    , open = False
     }
 
 
@@ -55,28 +55,24 @@ update msg model =
     case msg of
         KeyPressed code ->
             let
-                visible =
+                open =
                     case code of
                         27 ->
                             False
 
                         _ ->
-                            model.visible
+                            model.open
             in
-                ( { model | visible = visible }, Cmd.none )
+                ( { model | open = open }, Cmd.none )
 
-        Toggle ->
-            let
-                isVisible =
-                    not model.visible
-            in
-                ( { model | visible = isVisible }, Cmd.none )
+        Toggle open ->
+            ( { model | open = open }, Cmd.none )
 
 
 {-| Placeholder
 -}
-view : Model -> Properties msg -> msg -> Html msg
-view model properties toggleDrawer =
+view : Model -> Properties msg -> msg -> msg -> Html msg
+view model properties toggleOpenMsg toggleCloseMsg =
     let
         closeButton =
             label
@@ -92,8 +88,8 @@ view model properties toggleDrawer =
                 , type_ "radio"
                 , id (model.id ++ "-open")
                 , name model.id
-                , checked model.visible
-                , onClick toggleDrawer
+                , checked model.open
+                , onClick toggleOpenMsg
                 ]
                 []
             , input
@@ -101,7 +97,7 @@ view model properties toggleDrawer =
                 , type_ "radio"
                 , id (model.id ++ "-close")
                 , name model.id
-                , onClick toggleDrawer
+                , onClick toggleCloseMsg
                 ]
                 []
             , div
