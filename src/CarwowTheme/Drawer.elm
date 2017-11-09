@@ -1,4 +1,4 @@
-module CarwowTheme.Drawer exposing (Model, Properties, Msg(Toggle), Action(Close, Open), init, view, subscriptions, update)
+module CarwowTheme.Drawer exposing (Model, Properties, Msg(Toggle), Action(Close, Open), init, view, subscriptions, update, State(Opened))
 
 {-| Drawer
 
