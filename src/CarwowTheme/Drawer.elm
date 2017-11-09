@@ -5,7 +5,7 @@ module CarwowTheme.Drawer exposing (Model, Properties, Msg(Toggle), Action(Close
 
 # Exports
 
-@docs Model, Properties, Msg, init, view, subscriptions, update, Action
+@docs Model, Properties, Msg, init, view, subscriptions, update, Action, State
 
 -}
 
@@ -24,6 +24,8 @@ type alias Model =
     }
 
 
+{-| Placeholder
+-}
 type State
     = Opened
     | Closed
