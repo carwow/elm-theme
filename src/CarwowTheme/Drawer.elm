@@ -82,8 +82,8 @@ update msg model =
 
 {-| Placeholder
 -}
-view : Model -> Properties msg -> msg -> msg -> Html msg
-view model properties toggleOpenMsg toggleCloseMsg =
+view : Model -> Properties msg -> msg -> msg -> Html msg -> Html msg
+view model properties toggleOpenMsg toggleCloseMsg loadMoreButton =
     let
         closeButton =
             label
@@ -131,7 +131,9 @@ view model properties toggleOpenMsg toggleCloseMsg =
                     , div
                         [ class "notification-drawer__body"
                         ]
-                        [ properties.body ]
+                        [ properties.body
+                        , loadMoreButton
+                        ]
                     ]
                 ]
             ]
