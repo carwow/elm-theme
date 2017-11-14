@@ -32,7 +32,7 @@ select id label help_message options value msg =
             , Html.a [ Html.Attributes.href "javascript:;", Html.Attributes.class "tooltip tooltip--no-border tooltip--helper-icon" ]
                 [ Html.div [ Html.Attributes.class "tooltip__label" ]
                     [ Html.div [ Html.Attributes.class "tooltip--helper-icon__container" ]
-                        [ icon "question_mark" { size = "x-small", colour = "white", colouring = "outlined" }
+                        [ icon "question_mark" { size = "x-small", colour = "white", colouring = "outline" }
                         ]
                     ]
                 , Html.div [ Html.Attributes.class "tooltip-dropdown tooltip-dropdown--bottom" ]
