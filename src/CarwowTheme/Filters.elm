@@ -29,8 +29,12 @@ select id label help_message options value msg =
     [ Html.div []
         [ Html.div [ Html.Attributes.class "lease-contract-filters__filter-label" ]
             [ Html.label [ Html.Attributes.for id, Html.Attributes.class "form-input-label" ] [ Html.text label ]
-            , Html.a [ Html.Attributes.href "javascript:;", Html.Attributes.class "tooltip tooltip--no-border" ]
-                [ Html.div [ Html.Attributes.class "tooltip__label" ] [ icon "help" { size = "x-small", colour = "grey", colouring = "filled" } ]
+            , Html.a [ Html.Attributes.href "javascript:;", Html.Attributes.class "tooltip tooltip--no-border tooltip--helper-icon" ]
+                [ Html.div [ Html.Attributes.class "tooltip__label" ]
+                    [ Html.div [ Html.Attributes.class "tooltip--helper-icon__container" ]
+                        [ icon "question_mark" { size = "x-small", colour = "white", colouring = "outline" }
+                        ]
+                    ]
                 , Html.div [ Html.Attributes.class "tooltip-dropdown tooltip-dropdown--bottom" ]
                     [ Html.div [ Html.Attributes.class "tooltip-dropdown__arrow" ] []
                     , Html.div [ Html.Attributes.class "tooltip-dropdown__content" ] [ Html.text help_message ]
@@ -88,7 +92,7 @@ filterGroup items =
 
 {-| Placeholder
 -}
-standardFilterView : String -> String -> List (FilterGroupItem msg) ->  Html.Html msg
+standardFilterView : String -> String -> List (FilterGroupItem msg) -> Html.Html msg
 standardFilterView label selectedIcon items =
     let
         itemsCount =
@@ -137,13 +141,12 @@ filterView label selectedFiltersLabel filterIcon content =
                 [ div [ class "filter__icon" ]
                     [ icon filterIcon { size = "small", colour = "dark-grey", colouring = "outline" }
                     ]
-                    , div[]
-                    [
-                    div [ class "filter__label" ]
+                , div []
+                    [ div [ class "filter__label" ]
                         [ text label
                         , icon "caret_down" { size = "xx-small", colour = "dark-grey", colouring = "outline" }
                         ]
-                        , div [ class "filter__current-selection" ] [ text selectedFiltersLabel ]
+                    , div [ class "filter__current-selection" ] [ text selectedFiltersLabel ]
                     ]
                 ]
             , div
@@ -153,7 +156,7 @@ filterView label selectedFiltersLabel filterIcon content =
                 , div [ class "tooltip-dropdown__content" ]
                     [ div [ class "tooltip-dropdown__content" ]
                         [ ul [ class "filter-dropdown__inputs list-unstyled" ]
-                        content
+                            content
                         ]
                     ]
                 ]
