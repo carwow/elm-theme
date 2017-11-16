@@ -145,6 +145,7 @@ view model openModalEvent closeModalEvent properties =
                             [ ( "modal__body", True )
                             , ( "modal__body--no-padding", properties.paddingStyle == NoPadding )
                             ]
+                        , Html.Attributes.attribute "data-modal-content-body" "true"
                         ]
                         [ properties.body ]
                     , footer
