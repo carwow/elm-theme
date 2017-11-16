@@ -11,7 +11,7 @@ module CarwowTheme.Drawer exposing (Model, Properties, Msg(Toggle), Action(Close
 
 import Keyboard
 import CarwowTheme.Icons exposing (icon)
-import Html exposing (Html, div, input, label, text)
+import Html exposing (Html, div, input, label, text, ul)
 import Html.Attributes exposing (class, style, for, type_, id, name, checked, attribute, property)
 import Html.Events exposing (onClick)
 
@@ -131,7 +131,9 @@ view model properties toggleOpenMsg toggleCloseMsg loadMoreButton =
                     , div
                         [ class "notification-drawer__body"
                         ]
-                        [ properties.body
+                        [ ul
+                            [ class "list-unstyled notification-drawer__list" ]
+                            [ properties.body ]
                         , loadMoreButton
                         ]
                     ]
@@ -143,6 +145,4 @@ view model properties toggleOpenMsg toggleCloseMsg loadMoreButton =
 -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch
-        [ Keyboard.downs KeyPressed
-        ]
+    Keyboard.downs KeyPressed
