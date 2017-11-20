@@ -130,6 +130,7 @@ view model properties toggleOpenMsg toggleCloseMsg loadMoreButton =
                         ]
                     , div
                         [ class "notification-drawer__body"
+                        , Html.Attributes.attribute "data-modal-content-body" "true"
                         ]
                         [ properties.body
                         , loadMoreButton
