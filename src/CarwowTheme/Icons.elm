@@ -1,11 +1,11 @@
-module CarwowTheme.Icons exposing (icon)
+module CarwowTheme.Icons exposing (icon, makeIcon)
 
 {-| Icons are displayed using the SVG spirte technique.
 
 
 # Embed icon
 
-@docs icon
+@docs icon, makeIcon
 
 -}
 
@@ -39,3 +39,16 @@ icon iconName iconProperties =
             ]
             [ use [ xlinkHref ("#sprite_icon_" ++ iconName) ] []
             ]
+
+{-| Embeds a Make icon, with the given make slug and optional properties
+-}
+makeIcon : String -> Maybe Properties -> Html.Html msg
+makeIcon makeSlug iconProperties =
+    let
+      iconName = ("makes/" ++ String.join "_" (String.split "-" (String.toLower makeSlug)))
+    in
+      case iconProperties of
+        Nothing ->
+          icon iconName  { size = "large", colour = "grey", colouring = "filled" }
+        Just iconProperties ->
+          icon iconName iconProperties
