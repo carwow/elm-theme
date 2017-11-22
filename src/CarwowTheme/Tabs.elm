@@ -6,6 +6,7 @@ module CarwowTheme.Tabs
         , TabItem(TabItem)
         , getCurrentState
         , initialState
+        , State
         )
 
 {-| Tabs
