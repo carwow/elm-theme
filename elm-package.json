@@ -12,7 +12,8 @@
         "CarwowTheme.Icons",
         "CarwowTheme.Inputs",
         "CarwowTheme.Modal",
-        "CarwowTheme.Pagination"
+        "CarwowTheme.Pagination",
+        "CarwowTheme.Tabs"
     ],
     "dependencies": {
         "elm-community/list-extra": "6.1.0 <= v < 7.0.0",
