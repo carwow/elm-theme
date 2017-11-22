@@ -14,7 +14,7 @@ module CarwowTheme.Tabs
 
 # Exports
 
-@docs view, config, tabs, TabItem, getCurrentState, initialState
+@docs view, config, tabs, TabItem, getCurrentState, initialState, State
 
 -}
 
