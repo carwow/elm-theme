@@ -101,6 +101,8 @@ view model properties toggleOpenMsg toggleCloseMsg loadMoreButton =
                 , name model.id
                 , checked (model.state == Opened)
                 , onClick toggleOpenMsg
+                , Html.Attributes.attribute "data-open-modal-input" "true"
+                , Html.Attributes.attribute "data-modal-body-no-scroll" "true"
                 ]
                 []
             , input
@@ -109,6 +111,7 @@ view model properties toggleOpenMsg toggleCloseMsg loadMoreButton =
                 , id (model.id ++ "-close")
                 , name model.id
                 , onClick toggleCloseMsg
+                , Html.Attributes.attribute "data-close-modal-input" "true"
                 ]
                 []
             , div
@@ -130,6 +133,7 @@ view model properties toggleOpenMsg toggleCloseMsg loadMoreButton =
                         ]
                     , div
                         [ class "notification-drawer__body"
+                        , Html.Attributes.attribute "data-modal-content-body" "true"
                         ]
                         [ ul
                             [ class "list-unstyled notification-drawer__list" ]
