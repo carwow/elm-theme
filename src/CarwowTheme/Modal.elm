@@ -130,7 +130,9 @@ view model openModalEvent closeModalEvent properties =
                 , Html.Attributes.attribute "data-close-modal-input" "true"
                 ]
                 []
-            , div [ Html.Attributes.class "modal-overlay", id "modal-make-model-selector" ]
+            , div [ Html.Attributes.class "modal-overlay"
+                  , id "modal-make-model-selector"
+                  , attribute "data-close-on-esc" "true" ]
                 [ label
                     [ Html.Attributes.class "modal-overlay__cancel"
                     , Html.Attributes.for (model.id ++ "-close")
