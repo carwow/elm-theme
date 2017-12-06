@@ -10,9 +10,20 @@ module CarwowTheme.Filters exposing (select, filterView, standardFilterView, Fil
 -}
 
 import CarwowTheme.Icons exposing (icon)
-import CarwowTheme.Inputs exposing (checkbox, select)
+import CarwowTheme.Inputs exposing (select)
 import Html exposing (div, span, text, ul, li)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onCheck)
+
+
+{-| Placeholder
+-}
+type alias FilterGroupItem msg =
+    { filterId : String
+    , filterLabel : String
+    , filterValue : Bool
+    , message : Bool -> msg
+    }
 
 
 {-| Placeholder
@@ -48,25 +59,48 @@ select id label help_message options value msg =
 
 {-| Placeholder
 -}
-type alias FilterGroupItem msg =
-    { filterId : String
-    , filterLabel : String
-    , filterValue : Bool
-    , message : Bool -> msg
-    }
-
-
-{-| Placeholder
--}
-filterGroupItem : FilterGroupItem msg -> Html.Html msg
-filterGroupItem item =
+filterGroupItem : FilterGroupItem msg -> String -> Html.Html msg
+filterGroupItem item groupLabel =
     li [ class "filter__input" ]
-        (CarwowTheme.Inputs.checkbox
+        (filterCheckbox
             item.filterId
             [ Html.span [ Html.Attributes.class "filter__input-label" ] [ Html.text item.filterLabel ] ]
             item.filterValue
             item.message
+            (filterColoured item.filterLabel (String.toLower groupLabel))
         )
+
+
+filterColoured : String -> String -> String
+filterColoured filterLabel groupLabel =
+    (if groupLabel == "colour" then
+        "input-checkbox-coloured input-checkbox-coloured--" ++ (String.toLower filterLabel)
+     else
+        ""
+    )
+
+
+{-| Placeholder
+-}
+filterCheckbox :
+    String
+    -> List (Html.Html msg)
+    -> Bool
+    -> (Bool -> msg)
+    -> String
+    -> List (Html.Html msg)
+filterCheckbox id label value msg class =
+    [ Html.input
+        [ Html.Attributes.id id
+        , Html.Attributes.type_ "checkbox"
+        , Html.Events.onCheck msg
+        , Html.Attributes.checked value
+        , Html.Attributes.class class
+        ]
+        []
+    , Html.label [ Html.Attributes.for id ]
+        label
+    ]
 
 
 {-| Placeholder
@@ -85,9 +119,9 @@ getFilterGroupItemLabel item =
 
 {-| Placeholder
 -}
-filterGroup : List (FilterGroupItem msg) -> List (Html.Html msg)
-filterGroup items =
-    List.map filterGroupItem items
+filterGroup : List (FilterGroupItem msg) -> String -> List (Html.Html msg)
+filterGroup items label =
+    List.map (\item -> filterGroupItem item label) items
 
 
 {-| Placeholder
@@ -99,7 +133,7 @@ standardFilterView label selectedIcon items =
             List.length items
 
         content =
-            filterGroup items
+            filterGroup items label
 
         selectedFilters =
             List.filter isFilterGroupItemSelected items
