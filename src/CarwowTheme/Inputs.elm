@@ -1,4 +1,4 @@
-module CarwowTheme.Inputs exposing (checkbox, select, option)
+module CarwowTheme.Inputs exposing (checkbox, select, selectWithAttributes, option)
 
 {-| Helpers for user input elements.
 
@@ -13,67 +13,80 @@ module CarwowTheme.Inputs exposing (checkbox, select, option)
 @docs select
 
 
+# Select with Attributes
+
+@docs selectWithAttributes
+
+
 # Option
 
 @docs option
 
 -}
 
-import Html exposing (Html, input, label, text, div, select)
-import Html.Attributes exposing (id, type_, class, for, disabled)
-import Html.Events exposing (onCheck, onInput, targetValue)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 import Json.Decode exposing (float, map, map2, succeed)
 
 
-{-| Checbox atom
+{-| Checkbox atom
 -}
 checkbox :
     String
-    -> List (Html.Html msg)
+    -> List (Html msg)
     -> Bool
     -> (Bool -> msg)
-    -> List (Html.Html msg)
-checkbox id label value msg =
-    [ Html.input
-        [ Html.Attributes.id id
-        , Html.Attributes.type_ "checkbox"
-        , Html.Events.onCheck msg
-        , Html.Attributes.checked value
+    -> List (Html msg)
+checkbox cbId cbLabel value msg =
+    [ input
+        [ id cbId
+        , type_ "checkbox"
+        , onCheck msg
+        , checked value
         ]
         []
-    , Html.label [ Html.Attributes.for id ]
-        label
+    , label [ for cbId ]
+        cbLabel
     ]
 
 
 {-| Select atom
 -}
 select :
-    String
-    -> List (Html.Html msgType)
+    List (Html msgType)
+    -> String
     -> String
     -> (String -> msgType)
-    -> Bool
-    -> Html.Html msgType
-select id options value msg isDisabled =
-    Html.div [ Html.Attributes.class "select" ]
+    -> Html msgType
+select options value id msg =
+    selectWithAttributes options value id msg []
+
+
+{-| Select atom with extra attributes
+-}
+selectWithAttributes :
+    List (Html msgType)
+    -> String
+    -> String
+    -> (String -> msgType)
+    -> List (Attribute msgType)
+    -> Html msgType
+selectWithAttributes options selectValue selectId msg attributes =
+    div [ class "select" ]
         [ Html.select
-            [ Html.Attributes.id id
-            , Html.Attributes.value value
-            , onChange msg
-            , disabled isDisabled
-            ]
+            (onChange msg :: value selectValue :: id selectId :: attributes)
             options
         ]
 
 
 {-| Option atom
 -}
-option : String -> String -> Html.Html msg
-option value text =
-    Html.option [ Html.Attributes.value value ] [ Html.text text ]
+option : String -> String -> Html msg
+option optionValue optionText =
+    Html.option [ value optionValue ] [ text optionText ]
 
 
-onChange : (String -> value) -> Html.Attribute value
+onChange : (String -> value) -> Attribute value
 onChange tagger =
-    Html.Events.on "change" (map tagger Html.Events.targetValue)
+    on "change" (Json.Decode.map tagger targetValue)
