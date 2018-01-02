@@ -99,7 +99,7 @@ view model openModalEvent closeModalEvent properties =
                 , Html.Attributes.style [ ( "cursor", "pointer" ) ]
                 , Html.Attributes.for (model.id ++ "-close")
                 ]
-                [ icon "close_b" { size = "small", colour = "dark-grey", colouring = "outline" } ]
+                [ icon "close_b" { size = "small", colour = "black", colouring = "outline" } ]
 
         footer =
             case properties.footer of
