@@ -1,4 +1,12 @@
-module CarwowTheme.Inputs exposing (checkbox, select, selectSettings, disableSelect, setSelectedOption)
+module CarwowTheme.Inputs
+    exposing
+        ( checkbox
+        , select
+        , selectSettings
+        , disableSelect
+        , setSelectedOption
+        , SelectSettings
+        )
 
 {-| Helpers for user input elements.
 
@@ -9,6 +17,8 @@ module CarwowTheme.Inputs exposing (checkbox, select, selectSettings, disableSel
 
 
 # Select
+
+@docs SelectSettings
 
 @docs selectSettings
 
