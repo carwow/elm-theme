@@ -43,7 +43,7 @@ select id label help_message options value msg =
                 |> CarwowTheme.Inputs.setSelectedOption value
     in
         [ Html.div []
-            [ Html.div [ Html.Attributes.class "lease-contract-filters__filter-label" ]
+            [ Html.div []
                 [ Html.label [ Html.Attributes.for id, Html.Attributes.class "form-input-label" ] [ Html.text label ]
                 , Html.a [ Html.Attributes.href "javascript:;", Html.Attributes.class "tooltip tooltip--no-border tooltip--helper-icon" ]
                     [ Html.div [ Html.Attributes.class "tooltip__label" ]
