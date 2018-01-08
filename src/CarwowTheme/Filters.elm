@@ -32,29 +32,34 @@ select :
     String
     -> String
     -> String
-    -> List (Html.Html value)
+    -> List ( String, String )
     -> String
     -> (String -> value)
     -> List (Html.Html value)
 select id label help_message options value msg =
-    [ Html.div []
-        [ Html.div [ Html.Attributes.class "lease-contract-filters__filter-label" ]
-            [ Html.label [ Html.Attributes.for id, Html.Attributes.class "form-input-label" ] [ Html.text label ]
-            , Html.a [ Html.Attributes.href "javascript:;", Html.Attributes.class "tooltip tooltip--no-border tooltip--helper-icon" ]
-                [ Html.div [ Html.Attributes.class "tooltip__label" ]
-                    [ Html.div [ Html.Attributes.class "tooltip--helper-icon__container" ]
-                        [ icon "question_mark" { size = "x-small", colour = "white", colouring = "outline" }
+    let
+        selectSettings =
+            CarwowTheme.Inputs.selectSettings id options msg
+                |> CarwowTheme.Inputs.setSelectedOption value
+    in
+        [ Html.div []
+            [ Html.div []
+                [ Html.label [ Html.Attributes.for id, Html.Attributes.class "form-input-label" ] [ Html.text label ]
+                , Html.a [ Html.Attributes.href "javascript:;", Html.Attributes.class "tooltip tooltip--no-border tooltip--helper-icon" ]
+                    [ Html.div [ Html.Attributes.class "tooltip__label" ]
+                        [ Html.div [ Html.Attributes.class "tooltip--helper-icon__container" ]
+                            [ icon "question_mark" { size = "x-small", colour = "white", colouring = "outline" }
+                            ]
+                        ]
+                    , Html.div [ Html.Attributes.class "tooltip-dropdown tooltip-dropdown--bottom" ]
+                        [ Html.div [ Html.Attributes.class "tooltip-dropdown__arrow" ] []
+                        , Html.div [ Html.Attributes.class "tooltip-dropdown__content" ] [ Html.text help_message ]
                         ]
                     ]
-                , Html.div [ Html.Attributes.class "tooltip-dropdown tooltip-dropdown--bottom" ]
-                    [ Html.div [ Html.Attributes.class "tooltip-dropdown__arrow" ] []
-                    , Html.div [ Html.Attributes.class "tooltip-dropdown__content" ] [ Html.text help_message ]
-                    ]
                 ]
+            , CarwowTheme.Inputs.select selectSettings
             ]
-        , CarwowTheme.Inputs.select id options value msg False
         ]
-    ]
 
 
 {-| Placeholder
