@@ -117,6 +117,7 @@ view model openModalEvent closeModalEvent properties =
                 , name "modal-make-model-selector"
                 , checked model.isOpen
                 , onClick openModalEvent
+                , Html.Attributes.attribute "data-modal-input" "true"
                 , Html.Attributes.attribute "data-open-modal-input" "true"
                 , Html.Attributes.attribute "data-modal-body-no-scroll" "true"
                 ]
@@ -127,12 +128,15 @@ view model openModalEvent closeModalEvent properties =
                 , id (model.id ++ "-close")
                 , name "modal-make-model-selector"
                 , onClick closeModalEvent
+                , Html.Attributes.attribute "data-modal-input" "true"
                 , Html.Attributes.attribute "data-close-modal-input" "true"
                 ]
                 []
-            , div [ Html.Attributes.class "modal-overlay"
-                  , id "modal-make-model-selector"
-                  , attribute "data-close-on-esc" "true" ]
+            , div
+                [ Html.Attributes.class "modal-overlay"
+                , id "modal-make-model-selector"
+                , attribute "data-close-on-esc" "true"
+                ]
                 [ label
                     [ Html.Attributes.class "modal-overlay__cancel"
                     , Html.Attributes.for (model.id ++ "-close")
