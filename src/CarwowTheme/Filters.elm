@@ -10,6 +10,7 @@ module CarwowTheme.Filters exposing (select, filterView, standardFilterView, Fil
 -}
 
 import CarwowTheme.Icons exposing (icon)
+import CarwowTheme.ToolTips exposing (toolTip)
 import CarwowTheme.Inputs exposing (select)
 import Html exposing (div, span, text, ul, li)
 import Html.Attributes exposing (class)
@@ -23,6 +24,7 @@ type alias FilterGroupItem msg =
     , filterLabel : String
     , filterValue : Bool
     , message : Bool -> msg
+    , filterToolTip : Maybe String
     }
 
 
@@ -73,6 +75,7 @@ filterGroupItem item groupLabel =
             item.filterValue
             item.message
             (filterColoured item.filterLabel (String.toLower groupLabel))
+            item.filterToolTip
         )
 
 
@@ -93,19 +96,30 @@ filterCheckbox :
     -> Bool
     -> (Bool -> msg)
     -> String
+    -> Maybe String
     -> List (Html.Html msg)
-filterCheckbox id label value msg class =
-    [ Html.input
-        [ Html.Attributes.id id
-        , Html.Attributes.type_ "checkbox"
-        , Html.Events.onCheck msg
-        , Html.Attributes.checked value
-        , Html.Attributes.class class
+filterCheckbox id label value msg class tooltipMessage =
+    let
+        toolTipHtml =
+            case tooltipMessage of
+                Nothing ->
+                    text ""
+
+                Just tooltipMessage ->
+                    toolTip tooltipMessage
+    in
+        [ Html.input
+            [ Html.Attributes.id id
+            , Html.Attributes.type_ "checkbox"
+            , Html.Events.onCheck msg
+            , Html.Attributes.checked value
+            , Html.Attributes.class class
+            ]
+            []
+        , Html.label [ Html.Attributes.for id ]
+            label
+        , toolTipHtml
         ]
-        []
-    , Html.label [ Html.Attributes.for id ]
-        label
-    ]
 
 
 {-| Placeholder
