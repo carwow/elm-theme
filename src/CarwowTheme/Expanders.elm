@@ -19,11 +19,10 @@ expander header body expanderID =
         elementID = "expandable-panel-" ++ expanderID
     in
         div []
-            [ a [ class "expandable-link expandable-link--full-width expandable-link--arrow is-expanded", attribute "data-toggle" "expandable", href ("#" ++ elementID) ]
-                 [ div [ class "expandable-link___icon-text" ]
-                     header
-                 ]
+            [ div [ class "expandable-link___icon-text" ]
+                header
+            , a [ class "expandable-link expandable-link--full-width expandable-link--arrow is-expanded", attribute "data-toggle" "expandable", href ("#" ++ elementID) ]
+                [ text "" ]
             , div [ class "hidden-content ", id elementID, attribute "style" "display: block;" ]
                 [ text body ]
             ]
-
