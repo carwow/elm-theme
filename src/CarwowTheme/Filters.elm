@@ -1,4 +1,4 @@
-module CarwowTheme.Filters exposing (select, filterView, standardFilterView, FilterGroupItem, filterGroup)
+module CarwowTheme.Filters exposing (select, filterView, standardFilterView, FilterGroupItem, filterGroup, filterGroupWithExpander)
 
 {-| Filters
 
@@ -11,6 +11,7 @@ module CarwowTheme.Filters exposing (select, filterView, standardFilterView, Fil
 
 import CarwowTheme.Icons exposing (icon)
 import CarwowTheme.Inputs exposing (select)
+import CarwowTheme.Expanders exposing (expander)
 import Html exposing (div, span, text, ul, li)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onCheck)
@@ -22,6 +23,7 @@ type alias FilterGroupItem msg =
     { filterId : String
     , filterLabel : String
     , filterValue : Bool
+    , filterDescription : String
     , message : Bool -> msg
     }
 
@@ -67,13 +69,32 @@ select id label help_message options value msg =
 filterGroupItem : FilterGroupItem msg -> String -> Html.Html msg
 filterGroupItem item groupLabel =
     li [ class "filter__input" ]
-        (filterCheckbox
+       ( filterCheckboxFromItem item groupLabel )
+
+filterGroupItemWithExpander : FilterGroupItem msg -> String -> Html.Html msg
+filterGroupItemWithExpander item groupLabel =
+    let
+        header
+            = filterCheckboxFromItem item groupLabel
+        body
+            = item.filterDescription
+        expanderID =
             item.filterId
-            [ Html.span [ Html.Attributes.class "filter__input-label" ] [ Html.text item.filterLabel ] ]
-            item.filterValue
-            item.message
-            (filterColoured item.filterLabel (String.toLower groupLabel))
-        )
+        expanderHtml
+            = expander header body expanderID
+    in
+        li [ class "filter__input filter__full_width" ]
+           [ expanderHtml ]
+
+filterCheckboxFromItem : FilterGroupItem msg -> String -> List (Html.Html msg)
+filterCheckboxFromItem item groupLabel =
+    (filterCheckbox
+        item.filterId
+        [ Html.span [ Html.Attributes.class "filtser__input-label" ] [ Html.text item.filterLabel ] ]
+        item.filterValue
+        item.message
+        (filterColoured item.filterLabel (String.toLower groupLabel))
+    )
 
 
 filterColoured : String -> String -> String
@@ -128,6 +149,9 @@ filterGroup : List (FilterGroupItem msg) -> String -> List (Html.Html msg)
 filterGroup items label =
     List.map (\item -> filterGroupItem item label) items
 
+filterGroupWithExpander : List (FilterGroupItem msg) -> String -> List (Html.Html msg)
+filterGroupWithExpander items label =
+    List.map (\item -> filterGroupItemWithExpander item label) items
 
 {-| Placeholder
 -}
