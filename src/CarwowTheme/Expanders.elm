@@ -8,21 +8,21 @@ module CarwowTheme.Expanders exposing (expander)
 
 -}
 
-import Html exposing (div, span, text, ul, li, a, p)
+import Html exposing (div, span, text, ul, li, a)
 import Html.Attributes exposing (class, attribute, href, id)
 
 {-| Placeholder
 -}
 expander : List(Html.Html msg) -> String -> String -> Html.Html msg
-expander header body expanderID =
+expander headerContent bodyContent expanderID =
     let
         elementID = "expandable-panel-" ++ expanderID
     in
         div []
             [ div [ class "expandable-link___icon-text" ]
-                header
-            , a [ class "expandable-link expandable-link--full-width expandable-link--arrow is-expanded", attribute "data-toggle" "expandable", href ("#" ++ elementID) ]
+                headerContent
+            , a [ class "expandable-link expandable-link--full-width expandable-link--arrow", attribute "data-toggle" "expandable", href ("#" ++ elementID) ]
                 [ text "" ]
-            , div [ class "hidden-content ", id elementID, attribute "style" "display: block;" ]
-                [ text body ]
+            , div [ class "hidden-content ", id elementID, attribute "style" "display: none;" ]
+                [ text bodyContent ]
             ]

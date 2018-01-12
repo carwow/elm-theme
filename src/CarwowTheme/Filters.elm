@@ -16,7 +16,6 @@ import Html exposing (div, span, text, ul, li)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onCheck)
 
-
 {-| Placeholder
 -}
 type alias FilterGroupItem msg =
@@ -66,20 +65,21 @@ select id label help_message options value msg =
 
 {-| Placeholder
 -}
-filterGroupItem : FilterGroupItem msg -> String -> Html.Html msg
-filterGroupItem item groupLabel =
+filterGroupItem : FilterGroupItem msg -> String -> String -> Html.Html msg
+filterGroupItem item groupLabel filterPrefix =
     li [ class "filter__input" ]
        ( filterCheckboxFromItem item groupLabel )
 
-filterGroupItemWithExpander : FilterGroupItem msg -> String -> Html.Html msg
-filterGroupItemWithExpander item groupLabel =
+filterGroupItemWithExpander : FilterGroupItem msg -> String -> String -> Html.Html msg
+filterGroupItemWithExpander item groupLabel filterPrefix =
     let
         header
             = filterCheckboxFromItem item groupLabel
         body
             = item.filterDescription
+        -- The problem is we render these twice so duplicate IDs are breaking the expander JS
         expanderID =
-            item.filterId
+            filterPrefix ++ "_" ++ item.filterId
         expanderHtml
             = expander header body expanderID
     in
@@ -145,13 +145,13 @@ getFilterGroupItemLabel item =
 
 {-| Placeholder
 -}
-filterGroup : List (FilterGroupItem msg) -> String -> List (Html.Html msg)
-filterGroup items label =
-    List.map (\item -> filterGroupItem item label) items
+filterGroup : List (FilterGroupItem msg) -> String -> String -> List (Html.Html msg)
+filterGroup items label filterPrefix =
+    List.map (\item -> filterGroupItem item label filterPrefix) items
 
-filterGroupWithExpander : List (FilterGroupItem msg) -> String -> List (Html.Html msg)
-filterGroupWithExpander items label =
-    List.map (\item -> filterGroupItemWithExpander item label) items
+filterGroupWithExpander : List (FilterGroupItem msg) -> String -> String -> List (Html.Html msg)
+filterGroupWithExpander items label filterPrefix =
+    List.map (\item -> filterGroupItemWithExpander item label filterPrefix) items
 
 {-| Placeholder
 -}
@@ -162,7 +162,7 @@ standardFilterView label selectedIcon items =
             List.length items
 
         content =
-            filterGroup items label
+            filterGroup items label ""
 
         selectedFilters =
             List.filter isFilterGroupItemSelected items
