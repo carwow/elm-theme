@@ -153,6 +153,8 @@ filterGroup : List (FilterGroupItem msg) -> String -> String -> List (Html.Html 
 filterGroup items label filterPrefix =
     List.map (\item -> filterGroupItem item label filterPrefix) items
 
+{-| Placeholder
+-}
 filterGroupWithExpander : List (FilterGroupItem msg) -> String -> String -> List (Html.Html msg)
 filterGroupWithExpander items label filterPrefix =
     List.map (\item -> filterGroupItemWithExpander item label filterPrefix) items
