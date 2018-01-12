@@ -23,6 +23,6 @@ expander headerContent bodyContent expanderID =
                 headerContent
             , a [ class "expandable-link expandable-link--full-width expandable-link--arrow", attribute "data-toggle" "expandable", href ("#" ++ elementID) ]
                 [ text "" ]
-            , div [ class "hidden-content ", id elementID, attribute "style" "display: none;" ]
+            , div [ class "hidden-content filter__description", id elementID, attribute "style" "display: none;" ]
                 [ text bodyContent ]
             ]

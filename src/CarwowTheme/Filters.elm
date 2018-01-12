@@ -5,7 +5,7 @@ module CarwowTheme.Filters exposing (select, filterView, standardFilterView, Fil
 
 # Exports
 
-@docs select, filterView, standardFilterView, FilterGroupItem, filterGroup
+@docs select, filterView, standardFilterView, FilterGroupItem, filterGroup, filterGroupWithExpander
 
 -}
 
@@ -87,7 +87,7 @@ filterGroupItemWithExpander item groupLabel filterPrefix =
         expanderHtml
             = expander header body expanderID
     in
-        li [ class "filter__input filter__full_width" ]
+        li [ class "filter__input filter__with_description" ]
            [ expanderHtml ]
 
 filterCheckboxFromItem : FilterGroupItem msg -> String -> List (Html.Html msg)
