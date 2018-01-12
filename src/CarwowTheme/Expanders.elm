@@ -9,7 +9,8 @@ module CarwowTheme.Expanders exposing (expander)
 -}
 
 import Html exposing (div, span, text, ul, li, a)
-import Html.Attributes exposing (class, attribute, href, id)
+import Html.Attributes exposing (class, attribute, href, id, property)
+import Json.Encode
 
 {-| Placeholder
 -}
@@ -23,6 +24,11 @@ expander headerContent bodyContent expanderID =
                 headerContent
             , a [ class "expandable-link expandable-link--full-width expandable-link--arrow", attribute "data-toggle" "expandable", href ("#" ++ elementID) ]
                 [ text "" ]
-            , div [ class "hidden-content filter__description", id elementID, attribute "style" "display: none;" ]
-                [ text bodyContent ]
+            , div [
+                class "hidden-content filter__description"
+                , id elementID
+                , attribute "style" "display: none;"
+                , property "innerHTML" (Json.Encode.string bodyContent)
+                ]
+                []
             ]
