@@ -67,8 +67,13 @@ select id label help_message options value msg =
 -}
 filterGroupItem : FilterGroupItem msg -> String -> String -> Html.Html msg
 filterGroupItem item groupLabel filterPrefix =
-    li [ class "filter__input" ]
-       ( filterCheckboxFromItem item groupLabel )
+    let
+        checkboxes = (filterCheckboxFromItem item groupLabel)
+        description = div [ class "filter__description" ] [text item.filterDescription]
+        content = List.concat [ checkboxes, [description] ]
+    in
+        li [ class "filter__input" ]
+            content
 
 filterGroupItemWithExpander : FilterGroupItem msg -> String -> String -> Html.Html msg
 filterGroupItemWithExpander item groupLabel filterPrefix =
@@ -77,7 +82,6 @@ filterGroupItemWithExpander item groupLabel filterPrefix =
             = filterCheckboxFromItem item groupLabel
         body
             = item.filterDescription
-        -- The problem is we render these twice so duplicate IDs are breaking the expander JS
         expanderID =
             filterPrefix ++ "_" ++ item.filterId
         expanderHtml
