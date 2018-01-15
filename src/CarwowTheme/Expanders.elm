@@ -27,7 +27,6 @@ expander headerContent bodyContent expanderID =
             , div [
                 class "hidden-content filter__description"
                 , id elementID
-                , attribute "style" "display: none;"
                 , property "innerHTML" (Json.Encode.string bodyContent)
                 ]
                 []
