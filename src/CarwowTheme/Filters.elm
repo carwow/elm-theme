@@ -94,7 +94,7 @@ filterCheckboxFromItem : FilterGroupItem msg -> String -> List (Html.Html msg)
 filterCheckboxFromItem item groupLabel =
     (filterCheckbox
         item.filterId
-        [ Html.span [ Html.Attributes.class "filtser__input-label" ] [ Html.text item.filterLabel ] ]
+        [ Html.span [ Html.Attributes.class "filter__input-label" ] [ Html.text item.filterLabel ] ]
         item.filterValue
         item.message
         (filterColoured item.filterLabel (String.toLower groupLabel))
