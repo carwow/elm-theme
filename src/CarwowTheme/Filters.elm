@@ -11,10 +11,10 @@ module CarwowTheme.Filters exposing (select, filterView, standardFilterView, Fil
 
 import CarwowTheme.Icons exposing (icon)
 import CarwowTheme.Inputs exposing (select)
-import CarwowTheme.Expanders exposing (expander)
-import Html exposing (div, span, text, ul, li)
-import Html.Attributes exposing (class)
+import Html exposing (div, span, text, ul, li, a)
+import Html.Attributes exposing (class, attribute, href, id, property)
 import Html.Events exposing (onCheck)
+import Json.Encode
 
 {-| Placeholder
 -}
@@ -78,17 +78,28 @@ filterGroupItem item groupLabel filterPrefix =
 filterGroupItemWithExpander : FilterGroupItem msg -> String -> String -> Html.Html msg
 filterGroupItemWithExpander item groupLabel filterPrefix =
     let
-        header
-            = filterCheckboxFromItem item groupLabel
-        body
-            = item.filterDescription
         expanderID =
             filterPrefix ++ "_" ++ item.filterId
-        expanderHtml
-            = expander header body expanderID
     in
         li [ class "filter__input filter__with_description" ]
-           [ expanderHtml ]
+           [
+               div []
+               [ div [ class "expandable-link___icon-text" ]
+                   (filterCheckboxFromItem item groupLabel)
+               , a [
+                       class "expandable-link expandable-link--full-width expandable-link--arrow",
+                       attribute "data-toggle" "expandable",
+                       href ("#" ++ expanderID)
+                   ]
+                   [ text "" ]
+               , div [
+                   class "hidden-content filter__description"
+                   , id expanderID
+                   , property "innerHTML" (Json.Encode.string item.filterDescription)
+                   ]
+                   []
+               ]
+           ]
 
 filterCheckboxFromItem : FilterGroupItem msg -> String -> List (Html.Html msg)
 filterCheckboxFromItem item groupLabel =
@@ -197,7 +208,6 @@ standardFilterView label selectedIcon items alignment =
             filterView label selectedFiltersLabel selectedIcon content alignment
         else
             text ""
-
 
 {-| Placeholder
 -}
