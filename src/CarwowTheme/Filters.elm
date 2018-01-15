@@ -161,8 +161,8 @@ filterGroupWithExpander items label filterPrefix =
 
 {-| Placeholder
 -}
-standardFilterView : String -> String -> List (FilterGroupItem msg) -> Html.Html msg
-standardFilterView label selectedIcon items =
+standardFilterView : String -> String -> List (FilterGroupItem msg) -> String -> Html.Html msg
+standardFilterView label selectedIcon items alignment =
     let
         itemsCount =
             List.length items
@@ -194,15 +194,15 @@ standardFilterView label selectedIcon items =
                 firstSelectedFilter
     in
         if itemsCount > 1 then
-            filterView label selectedFiltersLabel selectedIcon content
+            filterView label selectedFiltersLabel selectedIcon content alignment
         else
             text ""
 
 
 {-| Placeholder
 -}
-filterView : String -> String -> String -> List (Html.Html msg) -> Html.Html msg
-filterView label selectedFiltersLabel filterIcon content =
+filterView : String -> String -> String -> List (Html.Html msg) -> String -> Html.Html msg
+filterView label selectedFiltersLabel filterIcon content alignment =
     li [ class "filter" ]
         [ div
             [ class "filter__tooltip tooltip tooltip--no-border" ]
@@ -219,7 +219,7 @@ filterView label selectedFiltersLabel filterIcon content =
                     ]
                 ]
             , div
-                [ class "tooltip-dropdown tooltip-dropdown--bottom" ]
+                [ class ("tooltip-dropdown tooltip-dropdown--" ++ alignment) ]
                 [ div [ class "tooltip-dropdown__arrow" ]
                     []
                 , div [ class "tooltip-dropdown__content" ]
