@@ -90,7 +90,7 @@ filterGroupItemWithExpander item groupLabel filterPrefix =
                    attribute "data-toggle" "expandable",
                    href ("#" ++ expanderID)
                ]
-               [ text "" ]
+               [ icon "caret_down" { colour = "light-black", size = "x-small", colouring = "outline" } ]
            , div [
                class "hidden-content filter__description"
                , id expanderID
