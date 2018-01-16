@@ -75,8 +75,6 @@ filterGroupItem item groupLabel filterPrefix =
         li [ class "filter__input" ]
             content
 
--- expandable-link expandable-link--full-width expandable-link--arrow
-
 filterGroupItemWithExpander : FilterGroupItem msg -> String -> String -> Html.Html msg
 filterGroupItemWithExpander item groupLabel filterPrefix =
     let
