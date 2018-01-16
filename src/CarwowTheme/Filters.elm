@@ -75,6 +75,8 @@ filterGroupItem item groupLabel filterPrefix =
         li [ class "filter__input" ]
             content
 
+-- expandable-link expandable-link--full-width expandable-link--arrow
+
 filterGroupItemWithExpander : FilterGroupItem msg -> String -> String -> Html.Html msg
 filterGroupItemWithExpander item groupLabel filterPrefix =
     let
@@ -83,22 +85,21 @@ filterGroupItemWithExpander item groupLabel filterPrefix =
     in
         li [ class "filter__input filter__with_description" ]
            [
-               div []
-               [ div [ class "expandable-link___icon-text" ]
-                   (filterCheckboxFromItem item groupLabel)
-               , a [
-                       class "expandable-link expandable-link--full-width expandable-link--arrow",
-                       attribute "data-toggle" "expandable",
-                       href ("#" ++ expanderID)
-                   ]
-                   [ text "" ]
-               , div [
-                   class "hidden-content filter__description"
-                   , id expanderID
-                   , property "innerHTML" (Json.Encode.string item.filterDescription)
-                   ]
-                   []
+           div [ class "filter-expandable__header" ]
+               (filterCheckboxFromItem item groupLabel)
+           , a [
+                   class "filter-expandable__link",
+                   attribute "data-toggle" "expandable",
+                   href ("#" ++ expanderID)
                ]
+               [ text "" ]
+           , div [
+               class "hidden-content filter__description"
+               , id expanderID
+               , property "innerHTML" (Json.Encode.string item.filterDescription)
+               ]
+               []
+
            ]
 
 filterCheckboxFromItem : FilterGroupItem msg -> String -> List (Html.Html msg)
