@@ -27,6 +27,8 @@ type alias FilterGroupItem msg =
     , message : Bool -> msg
     }
 
+{-| Placeholder
+-}
 type TooltipAlignment = Bottom |
                         BottomLeft |
                         BottomRight |
@@ -36,14 +38,20 @@ type TooltipAlignment = Bottom |
                         TopLeft |
                         TopRight
 
+{-| Placeholder
+-}
 type FilterDescriptionDisplay = Inline | Expandable
 
+{-| Placeholder
+-}
 type alias FilterSettings =
     { tooltipAlignment : TooltipAlignment
     , descriptionDisplay : FilterDescriptionDisplay
     , filterPrefix : Maybe String
     }
 
+{-| Placeholder
+-}
 defaultFilterSettings : FilterSettings
 defaultFilterSettings =
     { tooltipAlignment = Bottom
