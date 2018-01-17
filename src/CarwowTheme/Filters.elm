@@ -218,7 +218,7 @@ standardFilterView label selectedIcon items filterSettings =
             List.length items
 
         content =
-            filterGroup items label "" Inline
+            filterGroup items label "" filterSettings.descriptionDisplay
 
         selectedFilters =
             List.filter isFilterGroupItemSelected items
