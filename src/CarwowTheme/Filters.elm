@@ -5,7 +5,8 @@ module CarwowTheme.Filters exposing (select, filterView, standardFilterView, Fil
 
 # Exports
 
-@docs select, filterView, standardFilterView, FilterGroupItem, filterGroup
+@docs select, filterView, standardFilterView, FilterGroupItem, filterGroup, FilterDescriptionDisplay
+@docs FilterSettings, TooltipAlignment, defaultFilterSettings
 
 -}
 
