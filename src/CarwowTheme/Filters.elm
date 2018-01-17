@@ -1,4 +1,4 @@
-module CarwowTheme.Filters exposing (select, filterView, standardFilterView, FilterGroupItem, filterGroup, TooltipAlignment(..))
+module CarwowTheme.Filters exposing (select, filterView, standardFilterView, FilterGroupItem, filterGroup, TooltipAlignment(..), FilterDescriptionDisplay(..))
 
 {-| Filters
 
@@ -34,6 +34,8 @@ type TooltipAlignment = Bottom |
                         Top |
                         TopLeft |
                         TopRight
+
+type FilterDescriptionDisplay = Inline | Expandable
 
 {-| Placeholder
 -}
@@ -73,8 +75,8 @@ select id label help_message options value msg =
 
 {-| Placeholder
 -}
-filterGroupItem : FilterGroupItem msg -> String -> String -> Html.Html msg
-filterGroupItem item groupLabel filterPrefix =
+filterGroupItem : FilterGroupItem msg -> String -> String -> FilterDescriptionDisplay -> Html.Html msg
+filterGroupItem item groupLabel filterPrefix inlineOrExpandable =
     let
         checkbox = (filterCheckboxFromItem item groupLabel)
     in
@@ -82,7 +84,11 @@ filterGroupItem item groupLabel filterPrefix =
             Nothing ->
                 filterGroupItemBasic checkbox
             Just description ->
-                filterGroupItemInlineDescription checkbox description
+                case inlineOrExpandable of
+                    Inline ->
+                        filterGroupItemInlineDescription checkbox description
+                    Expandable ->
+                        filterGroupItemWithExpander checkbox description item.filterId filterPrefix
 
 {-| Placeholder
 -}
@@ -99,7 +105,7 @@ filterGroupItemInlineDescription checkbox description =
         inlineDescription =
             div [ class "filter__description" ] [text description]
         children =
-            List.concat [ checkbox, [inlineDescription] ]
+            List.append checkbox [inlineDescription]
     in
         li [ class "filter__input" ] children
 
@@ -110,8 +116,6 @@ filterGroupItemWithExpander checkbox description filterId filterPrefix =
     let
         expanderID =
             filterPrefix ++ "_" ++ filterId
-        html =
-            Json.Encode.string description
     in
         li [ class "filter__input filter__with-description" ]
            [
@@ -126,10 +130,9 @@ filterGroupItemWithExpander checkbox description filterId filterPrefix =
            , div [
                class "hidden-content filter__description"
                , id expanderID
-               , property "innerHTML" html
+               , property "innerHTML" (Json.Encode.string description)
                ]
                []
-
            ]
 
 filterCheckboxFromItem : FilterGroupItem msg -> String -> List (Html.Html msg)
@@ -191,9 +194,9 @@ getFilterGroupItemLabel item =
 
 {-| Placeholder
 -}
-filterGroup : List (FilterGroupItem msg) -> String -> String -> List (Html.Html msg)
-filterGroup items label filterPrefix =
-    List.map (\item -> filterGroupItem item label filterPrefix) items
+filterGroup : List (FilterGroupItem msg) -> String -> String -> FilterDescriptionDisplay -> List (Html.Html msg)
+filterGroup items label filterPrefix descriptionDisplay =
+    List.map (\item -> filterGroupItem item label filterPrefix descriptionDisplay) items
 
 {-| Placeholder
 -}
@@ -204,7 +207,7 @@ standardFilterView label selectedIcon items alignment =
             List.length items
 
         content =
-            filterGroup items label ""
+            filterGroup items label "" Inline
 
         selectedFilters =
             List.filter isFilterGroupItemSelected items
@@ -230,7 +233,7 @@ standardFilterView label selectedIcon items alignment =
                 firstSelectedFilter
     in
         if itemsCount > 1 then
-            filterView label selectedFiltersLabel selectedIcon content alignment
+            filterView label selectedFiltersLabel selectedIcon content alignment Inline
         else
             text ""
 
@@ -258,8 +261,8 @@ alignmentClass alignment =
 
 {-| Placeholder
 -}
-filterView : String -> String -> String -> List (Html.Html msg) -> TooltipAlignment -> Html.Html msg
-filterView label selectedFiltersLabel filterIcon content alignment =
+filterView : String -> String -> String -> List (Html.Html msg) -> TooltipAlignment -> FilterDescriptionDisplay -> Html.Html msg
+filterView label selectedFiltersLabel filterIcon content alignment filterDescriptionDisplay =
     li [ class "filter" ]
         [ div
             [ class "filter__tooltip tooltip tooltip--no-border" ]
