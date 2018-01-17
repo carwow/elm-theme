@@ -40,12 +40,14 @@ type FilterDescriptionDisplay = Inline | Expandable
 type alias FilterSettings =
     { tooltipAlignment : TooltipAlignment
     , descriptionDisplay : FilterDescriptionDisplay
+    , filterPrefix : Maybe String
     }
 
 defaultFilterSettings : FilterSettings
 defaultFilterSettings =
     { tooltipAlignment = Bottom
     , descriptionDisplay = Inline
+    , filterPrefix = Nothing
     }
 
 {-| Placeholder
@@ -86,8 +88,8 @@ select id label help_message options value msg =
 
 {-| Placeholder
 -}
-filterGroupItem : FilterGroupItem msg -> String -> String -> FilterDescriptionDisplay -> Html.Html msg
-filterGroupItem item groupLabel filterPrefix inlineOrExpandable =
+filterGroupItem : FilterGroupItem msg -> String -> FilterSettings -> Html.Html msg
+filterGroupItem item groupLabel { filterPrefix, descriptionDisplay } =
     let
         checkbox = (filterCheckboxFromItem item groupLabel)
     in
@@ -95,7 +97,7 @@ filterGroupItem item groupLabel filterPrefix inlineOrExpandable =
             Nothing ->
                 filterGroupItemBasic checkbox
             Just description ->
-                case inlineOrExpandable of
+                case descriptionDisplay of
                     Inline ->
                         filterGroupItemInlineDescription checkbox description
                     Expandable ->
@@ -122,11 +124,15 @@ filterGroupItemInlineDescription checkbox description =
 
 {-| Placeholder
 -}
-filterGroupItemWithExpander : List (Html.Html msg) -> String -> String -> String -> Html.Html msg
+filterGroupItemWithExpander : List (Html.Html msg) -> String -> String -> Maybe String -> Html.Html msg
 filterGroupItemWithExpander checkbox description filterId filterPrefix =
     let
         expanderID =
-            filterPrefix ++ "_" ++ filterId
+            case filterPrefix of
+                Nothing ->
+                    filterId
+                Just prefix ->
+                    prefix ++ "_" ++ filterId
     in
         li [ class "filter__input filter__with-description" ]
            [
@@ -205,9 +211,9 @@ getFilterGroupItemLabel item =
 
 {-| Placeholder
 -}
-filterGroup : List (FilterGroupItem msg) -> String -> String -> FilterDescriptionDisplay -> List (Html.Html msg)
-filterGroup items label filterPrefix descriptionDisplay =
-    List.map (\item -> filterGroupItem item label filterPrefix descriptionDisplay) items
+filterGroup : List (FilterGroupItem msg) -> String -> FilterSettings -> List (Html.Html msg)
+filterGroup items label filterSettings =
+    List.map (\item -> filterGroupItem item label filterSettings) items
 
 {-| Placeholder
 -}
@@ -218,7 +224,7 @@ standardFilterView label selectedIcon items filterSettings =
             List.length items
 
         content =
-            filterGroup items label "" filterSettings.descriptionDisplay
+            filterGroup items label filterSettings
 
         selectedFilters =
             List.filter isFilterGroupItemSelected items
