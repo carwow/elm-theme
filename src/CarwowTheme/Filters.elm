@@ -22,7 +22,7 @@ type alias FilterGroupItem msg =
     { filterId : String
     , filterLabel : String
     , filterValue : Bool
-    , filterDescription : String
+    , filterDescription : Maybe String
     , message : Bool -> msg
     }
 
@@ -68,9 +68,16 @@ select id label help_message options value msg =
 filterGroupItem : FilterGroupItem msg -> String -> String -> Html.Html msg
 filterGroupItem item groupLabel filterPrefix =
     let
-        checkboxes = (filterCheckboxFromItem item groupLabel)
-        description = div [ class "filter__description" ] [text item.filterDescription]
-        content = List.concat [ checkboxes, [description] ]
+        checkboxes =
+            (filterCheckboxFromItem item groupLabel) -- Always
+        description =
+            case item.filterDescription of
+                Nothing ->
+                    text ""
+                Just description ->
+                    div [ class "filter__description" ] [text description]
+        content =
+            List.concat [ checkboxes, [description] ] -- Always...
     in
         li [ class "filter__input" ]
             content
@@ -80,8 +87,15 @@ filterGroupItemWithExpander item groupLabel filterPrefix =
     let
         expanderID =
             filterPrefix ++ "_" ++ item.filterId
+
+        html =
+            case item.filterDescription of
+                Nothing ->
+                    (Json.Encode.string "")
+                Just description ->
+                    (Json.Encode.string description)
     in
-        li [ class "filter__input filter__with_description" ]
+        li [ class "filter__input filter__with-description" ]
            [
            div [ class "filter-expandable__header" ]
                (filterCheckboxFromItem item groupLabel)
@@ -94,7 +108,7 @@ filterGroupItemWithExpander item groupLabel filterPrefix =
            , div [
                class "hidden-content filter__description"
                , id expanderID
-               , property "innerHTML" (Json.Encode.string item.filterDescription)
+               , property "innerHTML" html
                ]
                []
 
