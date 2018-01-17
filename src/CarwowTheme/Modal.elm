@@ -51,10 +51,10 @@ type Msg
 
 {-| Placeholder
 -}
-init : String -> Model
-init id =
+init : String -> Bool -> Model
+init id isOpen =
     { id = id
-    , isOpen = False
+    , isOpen = isOpen
     }
 
 
