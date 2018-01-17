@@ -88,8 +88,8 @@ select id label help_message options value msg =
 
 {-| Placeholder
 -}
-filterGroupItem : FilterGroupItem msg -> String -> FilterSettings -> Html.Html msg
-filterGroupItem item groupLabel { filterPrefix, descriptionDisplay } =
+filterGroupItem : String -> FilterSettings -> FilterGroupItem msg -> Html.Html msg
+filterGroupItem groupLabel { filterPrefix, descriptionDisplay } item  =
     let
         checkbox = (filterCheckboxFromItem item groupLabel)
     in
@@ -211,9 +211,9 @@ getFilterGroupItemLabel item =
 
 {-| Placeholder
 -}
-filterGroup : List (FilterGroupItem msg) -> String -> FilterSettings -> List (Html.Html msg)
-filterGroup items label filterSettings =
-    List.map (\item -> filterGroupItem item label filterSettings) items
+filterGroup : String -> FilterSettings -> List (FilterGroupItem msg) -> List (Html.Html msg)
+filterGroup label filterSettings items =
+    List.map (filterGroupItem label filterSettings) items
 
 {-| Placeholder
 -}
@@ -224,7 +224,7 @@ standardFilterView label selectedIcon items filterSettings =
             List.length items
 
         content =
-            filterGroup items label filterSettings
+            filterGroup label filterSettings items
 
         selectedFilters =
             List.filter isFilterGroupItemSelected items
