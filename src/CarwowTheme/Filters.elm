@@ -1,4 +1,4 @@
-module CarwowTheme.Filters exposing (select, filterView, standardFilterView, FilterGroupItem, filterGroup, TooltipAlignment(..), FilterDescriptionDisplay(..))
+module CarwowTheme.Filters exposing (select, filterView, standardFilterView, FilterGroupItem, filterGroup, defaultFilterSettings, FilterSettings, TooltipAlignment(..), FilterDescriptionDisplay(..))
 
 {-| Filters
 
@@ -36,6 +36,17 @@ type TooltipAlignment = Bottom |
                         TopRight
 
 type FilterDescriptionDisplay = Inline | Expandable
+
+type alias FilterSettings =
+    { tooltipAlignment : TooltipAlignment
+    , descriptionDisplay : FilterDescriptionDisplay
+    }
+
+defaultFilterSettings : FilterSettings
+defaultFilterSettings =
+    { tooltipAlignment = Bottom
+    , descriptionDisplay = Inline
+    }
 
 {-| Placeholder
 -}
@@ -200,8 +211,8 @@ filterGroup items label filterPrefix descriptionDisplay =
 
 {-| Placeholder
 -}
-standardFilterView : String -> String -> List (FilterGroupItem msg) -> TooltipAlignment -> Html.Html msg
-standardFilterView label selectedIcon items alignment =
+standardFilterView : String -> String -> List (FilterGroupItem msg) -> FilterSettings -> Html.Html msg
+standardFilterView label selectedIcon items filterSettings =
     let
         itemsCount =
             List.length items
@@ -233,7 +244,7 @@ standardFilterView label selectedIcon items alignment =
                 firstSelectedFilter
     in
         if itemsCount > 1 then
-            filterView label selectedFiltersLabel selectedIcon content alignment Inline
+            filterView label selectedFiltersLabel selectedIcon content filterSettings
         else
             text ""
 
@@ -261,8 +272,8 @@ alignmentClass alignment =
 
 {-| Placeholder
 -}
-filterView : String -> String -> String -> List (Html.Html msg) -> TooltipAlignment -> FilterDescriptionDisplay -> Html.Html msg
-filterView label selectedFiltersLabel filterIcon content alignment filterDescriptionDisplay =
+filterView : String -> String -> String -> List (Html.Html msg) -> FilterSettings -> Html.Html msg
+filterView label selectedFiltersLabel filterIcon content { tooltipAlignment } =
     li [ class "filter" ]
         [ div
             [ class "filter__tooltip tooltip tooltip--no-border" ]
@@ -279,7 +290,7 @@ filterView label selectedFiltersLabel filterIcon content alignment filterDescrip
                     ]
                 ]
             , div
-                [ class ("tooltip-dropdown tooltip-dropdown--" ++ (alignmentClass alignment)) ]
+                [ class ("tooltip-dropdown tooltip-dropdown--" ++ (alignmentClass tooltipAlignment)) ]
                 [ div [ class "tooltip-dropdown__arrow" ]
                     []
                 , div [ class "tooltip-dropdown__content" ]
