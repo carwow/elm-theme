@@ -1,11 +1,11 @@
-module CarwowTheme.Filters exposing (select, filterView, standardFilterView, FilterGroupItem, filterGroup, filterGroupWithExpander)
+module CarwowTheme.Filters exposing (select, filterView, standardFilterView, FilterGroupItem, filterGroup, TooltipAlignment(..))
 
 {-| Filters
 
 
 # Exports
 
-@docs select, filterView, standardFilterView, FilterGroupItem, filterGroup, filterGroupWithExpander
+@docs select, filterView, standardFilterView, FilterGroupItem, filterGroup
 
 -}
 
@@ -26,6 +26,14 @@ type alias FilterGroupItem msg =
     , message : Bool -> msg
     }
 
+type TooltipAlignment = Bottom |
+                        BottomLeft |
+                        BottomRight |
+                        Left |
+                        Right |
+                        Top |
+                        TopLeft |
+                        TopRight
 
 {-| Placeholder
 -}
@@ -68,37 +76,47 @@ select id label help_message options value msg =
 filterGroupItem : FilterGroupItem msg -> String -> String -> Html.Html msg
 filterGroupItem item groupLabel filterPrefix =
     let
-        checkboxes =
-            (filterCheckboxFromItem item groupLabel) -- Always
-        description =
-            case item.filterDescription of
-                Nothing ->
-                    text ""
-                Just description ->
-                    div [ class "filter__description" ] [text description]
-        content =
-            List.concat [ checkboxes, [description] ] -- Always...
+        checkbox = (filterCheckboxFromItem item groupLabel)
     in
-        li [ class "filter__input" ]
-            content
+        case item.filterDescription of
+            Nothing ->
+                filterGroupItemBasic checkbox
+            Just description ->
+                filterGroupItemInlineDescription checkbox description
 
-filterGroupItemWithExpander : FilterGroupItem msg -> String -> String -> Html.Html msg
-filterGroupItemWithExpander item groupLabel filterPrefix =
+{-| Placeholder
+-}
+filterGroupItemBasic : List (Html.Html msg) -> Html.Html msg
+filterGroupItemBasic checkbox =
+    li [ class "filter__input" ]
+        checkbox
+
+{-| Placeholder
+-}
+filterGroupItemInlineDescription : List (Html.Html msg) -> String -> Html.Html msg
+filterGroupItemInlineDescription checkbox description =
+    let
+        inlineDescription =
+            div [ class "filter__description" ] [text description]
+        children =
+            List.concat [ checkbox, [inlineDescription] ]
+    in
+        li [ class "filter__input" ] children
+
+{-| Placeholder
+-}
+filterGroupItemWithExpander : List (Html.Html msg) -> String -> String -> String -> Html.Html msg
+filterGroupItemWithExpander checkbox description filterId filterPrefix =
     let
         expanderID =
-            filterPrefix ++ "_" ++ item.filterId
-
+            filterPrefix ++ "_" ++ filterId
         html =
-            case item.filterDescription of
-                Nothing ->
-                    (Json.Encode.string "")
-                Just description ->
-                    (Json.Encode.string description)
+            Json.Encode.string description
     in
         li [ class "filter__input filter__with-description" ]
            [
            div [ class "filter-expandable__header" ]
-               (filterCheckboxFromItem item groupLabel)
+               checkbox
            , a [
                    class "filter-expandable__link",
                    attribute "data-toggle" "expandable",
@@ -179,13 +197,7 @@ filterGroup items label filterPrefix =
 
 {-| Placeholder
 -}
-filterGroupWithExpander : List (FilterGroupItem msg) -> String -> String -> List (Html.Html msg)
-filterGroupWithExpander items label filterPrefix =
-    List.map (\item -> filterGroupItemWithExpander item label filterPrefix) items
-
-{-| Placeholder
--}
-standardFilterView : String -> String -> List (FilterGroupItem msg) -> String -> Html.Html msg
+standardFilterView : String -> String -> List (FilterGroupItem msg) -> TooltipAlignment -> Html.Html msg
 standardFilterView label selectedIcon items alignment =
     let
         itemsCount =
@@ -224,7 +236,29 @@ standardFilterView label selectedIcon items alignment =
 
 {-| Placeholder
 -}
-filterView : String -> String -> String -> List (Html.Html msg) -> String -> Html.Html msg
+alignmentClass : TooltipAlignment -> String
+alignmentClass alignment =
+    case alignment of
+        Left ->
+            "left"
+        Right ->
+            "right"
+        Top ->
+            "top"
+        Bottom ->
+            "bottom"
+        TopLeft ->
+            "top-left"
+        TopRight ->
+            "top-right"
+        BottomLeft ->
+            "bottom-left"
+        BottomRight ->
+            "bottom-right"
+
+{-| Placeholder
+-}
+filterView : String -> String -> String -> List (Html.Html msg) -> TooltipAlignment -> Html.Html msg
 filterView label selectedFiltersLabel filterIcon content alignment =
     li [ class "filter" ]
         [ div
@@ -242,7 +276,7 @@ filterView label selectedFiltersLabel filterIcon content alignment =
                     ]
                 ]
             , div
-                [ class ("tooltip-dropdown tooltip-dropdown--" ++ alignment) ]
+                [ class ("tooltip-dropdown tooltip-dropdown--" ++ (alignmentClass alignment)) ]
                 [ div [ class "tooltip-dropdown__arrow" ]
                     []
                 , div [ class "tooltip-dropdown__content" ]
