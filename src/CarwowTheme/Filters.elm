@@ -68,8 +68,9 @@ select :
     -> List ( String, String )
     -> String
     -> (String -> value)
+    -> FilterSettings
     -> List (Html.Html value)
-select id label help_message options value msg =
+select id label help_message options value msg { tooltipAlignment } =
     let
         selectSettings =
             CarwowTheme.Inputs.selectSettings id options msg
@@ -84,7 +85,7 @@ select id label help_message options value msg =
                             [ icon "question_mark" { size = "x-small", colour = "white", colouring = "outline" }
                             ]
                         ]
-                    , Html.div [ Html.Attributes.class "tooltip-dropdown tooltip-dropdown--bottom" ]
+                    , Html.div [ class ("tooltip-dropdown tooltip-dropdown--" ++ (alignmentClass tooltipAlignment)) ]
                         [ Html.div [ Html.Attributes.class "tooltip-dropdown__arrow" ] []
                         , Html.div [ Html.Attributes.class "tooltip-dropdown__content" ] [ Html.text help_message ]
                         ]
