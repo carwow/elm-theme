@@ -17,6 +17,7 @@ import Html.Attributes exposing (class, attribute, href, id, property)
 import Html.Events exposing (onCheck)
 import Json.Encode
 
+
 {-| Placeholder
 -}
 type alias FilterGroupItem msg =
@@ -27,20 +28,26 @@ type alias FilterGroupItem msg =
     , message : Bool -> msg
     }
 
-{-| Placeholder
--}
-type TooltipAlignment = Bottom |
-                        BottomLeft |
-                        BottomRight |
-                        Left |
-                        Right |
-                        Top |
-                        TopLeft |
-                        TopRight
 
 {-| Placeholder
 -}
-type FilterDescriptionDisplay = Inline | Expandable
+type TooltipAlignment
+    = Bottom
+    | BottomLeft
+    | BottomRight
+    | Left
+    | Right
+    | Top
+    | TopLeft
+    | TopRight
+
+
+{-| Placeholder
+-}
+type FilterDescriptionDisplay
+    = Inline
+    | Expandable
+
 
 {-| Placeholder
 -}
@@ -50,6 +57,7 @@ type alias FilterSettings =
     , filterPrefix : Maybe String
     }
 
+
 {-| Placeholder
 -}
 defaultFilterSettings : FilterSettings
@@ -58,6 +66,7 @@ defaultFilterSettings =
     , descriptionDisplay = Inline
     , filterPrefix = Nothing
     }
+
 
 {-| Placeholder
 -}
@@ -99,19 +108,23 @@ select id label help_message options value msg { tooltipAlignment } =
 {-| Placeholder
 -}
 filterGroupItem : String -> FilterSettings -> FilterGroupItem msg -> Html.Html msg
-filterGroupItem groupLabel { filterPrefix, descriptionDisplay } item  =
+filterGroupItem groupLabel { filterPrefix, descriptionDisplay } item =
     let
-        checkbox = (filterCheckboxFromItem item groupLabel)
+        checkbox =
+            (filterCheckboxFromItem item groupLabel)
     in
         case item.filterDescription of
             Nothing ->
                 filterGroupItemBasic checkbox
+
             Just description ->
                 case descriptionDisplay of
                     Inline ->
                         filterGroupItemInlineDescription checkbox description
+
                     Expandable ->
                         filterGroupItemWithExpander checkbox description item.filterId filterPrefix
+
 
 {-| Placeholder
 -}
@@ -120,17 +133,20 @@ filterGroupItemBasic checkbox =
     li [ class "filter__input" ]
         checkbox
 
+
 {-| Placeholder
 -}
 filterGroupItemInlineDescription : List (Html.Html msg) -> String -> Html.Html msg
 filterGroupItemInlineDescription checkbox description =
     let
         inlineDescription =
-            div [ class "filter__description" ] [text description]
+            div [ class "filter__description" ] [ text description ]
+
         children =
-            List.append checkbox [inlineDescription]
+            List.append checkbox [ inlineDescription ]
     in
         li [ class "filter__input" ] children
+
 
 {-| Placeholder
 -}
@@ -141,26 +157,27 @@ filterGroupItemWithExpander checkbox description filterId filterPrefix =
             case filterPrefix of
                 Nothing ->
                     filterId
+
                 Just prefix ->
                     prefix ++ "_" ++ filterId
     in
         li [ class "filter__input filter__with-description" ]
-           [
-           div [ class "filter-expandable__header" ]
-               checkbox
-           , a [
-                   class "filter-expandable__link",
-                   attribute "data-toggle" "expandable",
-                   href ("#" ++ expanderID)
-               ]
-               [ icon "caret_down" { colour = "light-black", size = "x-small", colouring = "outline" } ]
-           , div [
-               class "hidden-content filter__description"
-               , id expanderID
-               , property "innerHTML" (Json.Encode.string description)
-               ]
-               []
-           ]
+            [ div [ class "filter-expandable__header" ]
+                checkbox
+            , a
+                [ class "filter-expandable__link"
+                , attribute "data-toggle" "expandable"
+                , href ("#" ++ expanderID)
+                ]
+                [ icon "caret_down" { colour = "light-black", size = "x-small", colouring = "outline" } ]
+            , div
+                [ class "hidden-content filter__description"
+                , id expanderID
+                , property "innerHTML" (Json.Encode.string description)
+                ]
+                []
+            ]
+
 
 filterCheckboxFromItem : FilterGroupItem msg -> String -> List (Html.Html msg)
 filterCheckboxFromItem item groupLabel =
@@ -225,6 +242,7 @@ filterGroup : String -> FilterSettings -> List (FilterGroupItem msg) -> List (Ht
 filterGroup label filterSettings items =
     List.map (filterGroupItem label filterSettings) items
 
+
 {-| Placeholder
 -}
 standardFilterView : String -> String -> List (FilterGroupItem msg) -> FilterSettings -> Html.Html msg
@@ -264,6 +282,7 @@ standardFilterView label selectedIcon items filterSettings =
         else
             text ""
 
+
 {-| Placeholder
 -}
 alignmentClass : TooltipAlignment -> String
@@ -271,20 +290,28 @@ alignmentClass alignment =
     case alignment of
         Left ->
             "left"
+
         Right ->
             "right"
+
         Top ->
             "top"
+
         Bottom ->
             "bottom"
+
         TopLeft ->
             "top-left"
+
         TopRight ->
             "top-right"
+
         BottomLeft ->
             "bottom-left"
+
         BottomRight ->
             "bottom-right"
+
 
 {-| Placeholder
 -}
