@@ -28,7 +28,7 @@ type alias Model =
 -}
 type alias ModalProperties msg =
     { body : Html msg
-    , title : String
+    , title : Maybe (Html msg)
     , paddingStyle : PaddingStyle
     , footer : Maybe (Html msg)
     , secondaryAction : Maybe (Html msg)
@@ -101,6 +101,15 @@ view model openModalEvent closeModalEvent properties =
                 ]
                 [ icon "close_b" { size = "small", colour = "black", colouring = "outline" } ]
 
+        title =
+            case properties.title of
+                Just content ->
+                    div [ Html.Attributes.class "modal__title modal__title--centered" ]
+                        [ content ]
+
+                Nothing ->
+                    Html.text ""
+
         footer =
             case properties.footer of
                 Just content ->
@@ -145,8 +154,7 @@ view model openModalEvent closeModalEvent properties =
                 , div [ Html.Attributes.class "modal" ]
                     [ div [ Html.Attributes.class "modal__header modal__header--with-border" ]
                         [ Maybe.withDefault (Html.text "") properties.secondaryAction
-                        , div [ Html.Attributes.class "modal__title modal__title--centered" ]
-                            [ text properties.title ]
+                        , title
                         , closeButton
                         ]
                     , div
