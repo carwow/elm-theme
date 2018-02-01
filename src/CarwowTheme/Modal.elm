@@ -81,10 +81,10 @@ update msg model =
 
 {-| Placeholder
 -}
-linkView : Model -> List (Html msg) -> String -> Html msg
-linkView model content classes =
+linkView : Model -> List (Html msg) -> String -> String -> Html msg
+linkView model content classes interactionDataAttribute =
     label
-        [ for (model.id ++ "-open"), class classes ]
+        [ for (model.id ++ "-open"), attribute "data-interaction-type" "open modal", attribute "data-iteraction" interactionDataAttribute, class classes ]
         content
 
 
