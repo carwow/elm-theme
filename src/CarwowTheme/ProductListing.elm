@@ -44,7 +44,8 @@ type alias DealerProperties =
     }
 
 type alias ProductListing =
-    { image: String
+    { id : Int
+    , image: String
     , make : String
     , model : String
     , derivativeName : String
@@ -55,78 +56,21 @@ type alias ProductListing =
     }
 
 
-condensedView : ProductListing -> Html msg
-condensedView productDetails =
+condensedView : ProductListing -> Html msg -> Html msg
+condensedView productDetails ctaContent =
     div [ class "product-listing" ]
     [ div [ class "product-listing__main-characteristics" ]
         [ pricePartialView productDetails.price
         ]
     , div [ class "product-listing__information-container" ]
         [ dealerPartialView productDetails.dealer
-        , div [ class "product-enquiry-cta-container" ]
-            [ div [ class "product-enquiry-cta--dealer" ]
-                [ label [ class "btn btn-short btn-action"]
-                    [ text "Call dealer" ]
-                ]
-            , div [ class "product-enquiry-cta--message" ]
-                [ a [ class "btn btn-short" ]
-                    [ text "Message" ]
-                ]
-            ]
+        , ctaContent
         ]
     ]
 
 
-dealerPartialView : DealerProperties -> Html msg
-dealerPartialView dealer =
-    div [ class "product-listing__information-items" ]
-            [ div [ class "product-dealer-container" ]
-                [ div [ class "product-dealer__name" ]
-                    [ label [ class "product-dealer__link" ]
-                        [ text dealer.name ]
-                    , text " - "
-                    ,span [ class "product-dealer__status" ]
-                        [ text (supplierType dealer.supplier)
-                        ]
-                    ]
-                , div [ class "product-dealer__location" ]
-                    [ icon "location" { size = "small", colour = "dark-grey", colouring = "outline" }
-                    , span [ class "product-dealer__location-text" ]
-                        [ text dealer.distance ]
-                    ]
-                ]
-            ]
-
-pricePartialView : PricingProperties -> Html msg
-pricePartialView price =
-    div [ class "product-listing__price--condensed" ]
-        [ span [ class "product-price__amount-copy" ]
-            [ text price.topText]
-        , strong [ class "product-price__amount-price" ]
-            [ text price.firstPart
-            , span [ class "product-price__amount-price-decimal" ]
-                [ text ("." ++ price.secondPart) ]
-            ]
-        , ul [ class "product-price__additional-info-list" ]
-            [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
-                [ text price.bottomText
-                ]
-            ]
-        ]
-
-supplierType : SupplierType -> String
-supplierType supplier =
-    case supplier of
-        Broker ->
-            "Broker"
-        Dealer ->
-            "Dealer"
-
-
-{-| Properties for the pagination component
--}
-featuredView : ProductListing -> Html msg
-featuredView details =
+featuredView : ProductListing -> Html msg -> Html msg
+featuredView details ctaContent =
     div [ class "product-listing" ]
         [ div [ class "product-listing__ribbon" ]
             [ span [ class "product-listing__ribbon-text product-listing__ribbon-text--green" ]
@@ -187,15 +131,54 @@ featuredView details =
             [ div [ class "product-listing__information-items" ]
                 [ dealerPartialView details.dealer
                 ]
-            , div [ class "product-enquiry-cta-container" ]
-                [ div [ class "product-enquiry-cta--dealer" ]
-                    [ label [ class "btn btn-short btn-action" ]
-                        [ text "Call dealer" ]
+            , ctaContent
+            ]
+        ]
+
+
+dealerPartialView : DealerProperties -> Html msg
+dealerPartialView dealer =
+    div [ class "product-listing__information-items" ]
+            [ div [ class "product-dealer-container" ]
+                [ div [ class "product-dealer__name" ]
+                    [ label [ class "product-dealer__link" ]
+                        [ text dealer.name ]
+                    , text " - "
+                    ,span [ class "product-dealer__status" ]
+                        [ text (supplierType dealer.supplier)
+                        ]
                     ]
-                , div [ class "product-enquiry-cta--message" ]
-                    [ a [ class "btn btn-short" ]
-                        [ text "Message" ]
+                , div [ class "product-dealer__location" ]
+                    [ icon "location" { size = "small", colour = "dark-grey", colouring = "outline" }
+                    , span [ class "product-dealer__location-text" ]
+                        [ text dealer.distance ]
                     ]
                 ]
             ]
+
+
+pricePartialView : PricingProperties -> Html msg
+pricePartialView price =
+    div [ class "product-listing__price--condensed" ]
+        [ span [ class "product-price__amount-copy" ]
+            [ text price.topText]
+        , strong [ class "product-price__amount-price" ]
+            [ text price.firstPart
+            , span [ class "product-price__amount-price-decimal" ]
+                [ text ("." ++ price.secondPart) ]
+            ]
+        , ul [ class "product-price__additional-info-list" ]
+            [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
+                [ text price.bottomText
+                ]
+            ]
         ]
+
+
+supplierType : SupplierType -> String
+supplierType supplier =
+    case supplier of
+        Broker ->
+            "Broker"
+        Dealer ->
+            "Dealer"
