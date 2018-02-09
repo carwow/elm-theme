@@ -1,4 +1,4 @@
-module CarwowTheme.ProductListing exposing (featuredView, condensedView, ProductListing, ListingType(..), SupplierType(..), OptionProperties)
+module CarwowTheme.ProductListing exposing (featuredView, condensedView, ProductListing, OptionProperties)
 
 {-| ProductListing
 
@@ -12,17 +12,6 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import CarwowTheme.Icons exposing (icon)
 
-
-type ListingType
-    = Condensed
-    | Featured
-    | Grouped
-    | Leasing
-    | Stock
-
-type SupplierType
-    = Broker
-    | Dealer
 
 type alias PricingProperties =
     { firstPart : String
@@ -40,7 +29,7 @@ type alias OptionProperties =
 type alias DealerProperties =
     { distance : String
     , name: String
-    , supplier: SupplierType
+    , supplier: String
     }
 
 type alias ProductListing =
@@ -52,7 +41,6 @@ type alias ProductListing =
     , options: List OptionProperties
     , price : PricingProperties
     , dealer: DealerProperties
-    , coloursAvailable: String
     }
 
 
@@ -69,8 +57,8 @@ condensedView productDetails ctaContent =
     ]
 
 
-featuredView : ProductListing -> Html msg -> Html msg
-featuredView details ctaContent =
+featuredView : ProductListing -> Html msg -> Html msg -> Html msg
+featuredView details ctaContent availableColoursCta =
     div [ class "product-listing" ]
         [ div [ class "product-listing__ribbon" ]
             [ span [ class "product-listing__ribbon-text product-listing__ribbon-text--green" ]
@@ -93,11 +81,7 @@ featuredView details ctaContent =
                                 [ text details.derivativeName ]
 
                             ]
-                        , div [ class "product-colours" ]
-                            [ icon "brush" { size = "small", colour = "black", colouring = "outline" }
-                            , label [ class "product-colours__link product-colours__link" ]
-                                [ text details.coloursAvailable ]
-                            ]
+                        , availableColoursCta
                         , ul [ class "product-details__specifications-list product-details__specifications-list--leasing" ]
                             ((details.options)
                                 |> List.map
@@ -145,7 +129,7 @@ dealerPartialView dealer =
                         [ text dealer.name ]
                     , text " - "
                     ,span [ class "product-dealer__status" ]
-                        [ text (supplierType dealer.supplier)
+                        [ text dealer.supplier
                         ]
                     ]
                 , div [ class "product-dealer__location" ]
@@ -173,12 +157,3 @@ pricePartialView price =
                 ]
             ]
         ]
-
-
-supplierType : SupplierType -> String
-supplierType supplier =
-    case supplier of
-        Broker ->
-            "Broker"
-        Dealer ->
-            "Dealer"
