@@ -16,9 +16,10 @@ import CarwowTheme.Icons exposing (icon)
 type alias PricingProperties =
     { firstPart : String
     , secondPart : String
-    , topText: String
-    , bottomText: String
+    , topText : String
+    , bottomText : String
     }
+
 
 type alias OptionProperties =
     { name : String
@@ -26,35 +27,37 @@ type alias OptionProperties =
     , icon : String
     }
 
+
 type alias DealerProperties =
     { distance : String
-    , name: String
-    , supplier: String
+    , name : String
+    , supplier : String
     }
+
 
 type alias ProductListing =
     { id : Int
-    , image: String
+    , image : String
     , make : String
     , model : String
     , derivativeName : String
-    , options: List OptionProperties
+    , options : List OptionProperties
     , price : PricingProperties
-    , dealer: DealerProperties
+    , dealer : DealerProperties
     }
 
 
 condensedView : ProductListing -> Html msg -> Html msg
 condensedView productDetails ctaContent =
     div [ class "product-listing" ]
-    [ div [ class "product-listing__main-characteristics" ]
-        [ pricePartialView productDetails.price
+        [ div [ class "product-listing__main-characteristics" ]
+            [ pricePartialView productDetails.price
+            ]
+        , div [ class "product-listing__information-container" ]
+            [ dealerPartialView productDetails.dealer
+            , ctaContent
+            ]
         ]
-    , div [ class "product-listing__information-container" ]
-        [ dealerPartialView productDetails.dealer
-        , ctaContent
-        ]
-    ]
 
 
 featuredView : ProductListing -> Html msg -> Html msg -> Html msg
@@ -79,7 +82,6 @@ featuredView details ctaContent availableColoursCta =
                                 [ text details.model ]
                             , span [ class "product-title__part" ]
                                 [ text details.derivativeName ]
-
                             ]
                         , availableColoursCta
                         , ul [ class "product-details__specifications-list product-details__specifications-list--leasing" ]
@@ -98,7 +100,7 @@ featuredView details ctaContent availableColoursCta =
                 ]
             , div [ class "product-listing__price--featured" ]
                 [ span [ class "product-price__amount-copy" ]
-                    [ text  details.price.topText ]
+                    [ text details.price.topText ]
                 , strong [ class "product-price__amount-price" ]
                     [ text details.price.firstPart
                     , span [ class "product-price__amount-price-decimal" ]
@@ -123,29 +125,29 @@ featuredView details ctaContent availableColoursCta =
 dealerPartialView : DealerProperties -> Html msg
 dealerPartialView dealer =
     div [ class "product-listing__information-items" ]
-            [ div [ class "product-dealer-container" ]
-                [ div [ class "product-dealer__name" ]
-                    [ label [ class "product-dealer__link" ]
-                        [ text dealer.name ]
-                    , text " - "
-                    ,span [ class "product-dealer__status" ]
-                        [ text dealer.supplier
-                        ]
-                    ]
-                , div [ class "product-dealer__location" ]
-                    [ icon "location" { size = "small", colour = "dark-grey", colouring = "outline" }
-                    , span [ class "product-dealer__location-text" ]
-                        [ text dealer.distance ]
+        [ div [ class "product-dealer-container" ]
+            [ div [ class "product-dealer__name" ]
+                [ label [ class "product-dealer__link" ]
+                    [ text dealer.name ]
+                , text " - "
+                , span [ class "product-dealer__status" ]
+                    [ text dealer.supplier
                     ]
                 ]
+            , div [ class "product-dealer__location" ]
+                [ icon "location" { size = "small", colour = "dark-grey", colouring = "outline" }
+                , span [ class "product-dealer__location-text" ]
+                    [ text dealer.distance ]
+                ]
             ]
+        ]
 
 
 pricePartialView : PricingProperties -> Html msg
 pricePartialView price =
     div [ class "product-listing__price--condensed" ]
         [ span [ class "product-price__amount-copy" ]
-            [ text price.topText]
+            [ text price.topText ]
         , strong [ class "product-price__amount-price" ]
             [ text price.firstPart
             , span [ class "product-price__amount-price-decimal" ]
