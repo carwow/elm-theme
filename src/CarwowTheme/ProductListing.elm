@@ -37,7 +37,7 @@ type alias DealerProperties =
 
 type alias ProductListing =
     { id : Int
-    , image : String
+    , image : Maybe String
     , make : String
     , model : String
     , derivativeName : String
@@ -59,6 +59,18 @@ condensedView productDetails ctaContent =
             ]
         ]
 
+renderThumbnail : Maybe String -> Html msg
+renderThumbnail imageUrl =
+    case imageUrl of
+        Just image ->
+            img [ class "product-image", src image ]
+                []
+
+        Nothing ->
+            div [ class "product-image--empty" ] [
+                icon "location" { size = "x-large", colour = "light-grey", colouring = "outline" }
+            ]
+
 
 featuredView : ProductListing -> Html msg -> Html msg -> Html msg
 featuredView details ctaContent availableColoursCta =
@@ -68,10 +80,8 @@ featuredView details ctaContent availableColoursCta =
                 [ text "Featured deal" ]
             ]
         , div [ class "product-listing__main-characteristics" ]
-            [ figure [ class "product-image-container product-image-container--featured" ]
-                [ img [ class "product-image", src details.image ]
-                    []
-                ]
+            [ figure [ class "product-image-container product-image-container--featured" ] [
+                renderThumbnail details.image]
             , div [ class "product-listing__details" ]
                 [ div [ class "product-details-container" ]
                     [ figcaption [ class "product-details" ]
