@@ -1,4 +1,4 @@
-module CarwowTheme.EmptyState exposing (view)
+module CarwowTheme.EmptyState exposing (emptyState)
 
 {-| EmptyState
 
@@ -15,11 +15,11 @@ import Svg.Attributes exposing (..)
 
 {-| Placeholder
 -}
-view : String -> String -> Html msg -> Html msg
-view title description emptyStateIcon =
+emptyState : String -> String -> Html msg -> Html msg
+emptyState title description emptyStateIcon =
     div [ Html.Attributes.class "empty-state empty-state--full-width" ]
         [ div [ Html.Attributes.class "empty-state__confetti" ]
-            [ svg [ Html.Attributes.class "empty-state__confetti-image", viewBox "0 0 181 68", attribute "xmlns" "http://www.w3.org/2000/svg" ]
+            [ Svg.svg [ Svg.Attributes.class "empty-state__confetti-image", viewBox "0 0 181 68", attribute "xmlns" "http://www.w3.org/2000/svg" ]
                 [ g [ fill "none", attribute "fill-rule" "evenodd" ]
                     [ Svg.path [ d "M163.8 18.4c0-3.5-3-6.4-6.4-6.4-3.5 0-6.4 3-6.4 6.4 0 3.5 3 6.4 6.4 6.4 3.5 0 6.3-3 6.3-6.4zm-11 0c0-2.5 2-4.6 4.6-4.6 2.5 0 4.5 2 4.5 4.6 0 2.5-2 4.5-4.6 4.5-2.5 0-4.6-2-4.6-4.6zM27 62c0-2.8-2.2-5-5-5s-5 2.2-5 5 2.2 5 5 5 5-2.2 5-5zm-8.6 0c0-2 1.6-3.6 3.6-3.6s3.6 1.6 3.6 3.6-1.6 3.6-3.6 3.6-3.6-1.6-3.6-3.6z", fill "#00A4FF", attribute "fill-rule" "nonzero", attribute "stroke" "#00A4FF" ]
                         []
