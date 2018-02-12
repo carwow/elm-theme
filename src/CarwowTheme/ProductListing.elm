@@ -59,6 +59,7 @@ condensedView productDetails ctaContent =
             ]
         ]
 
+
 renderThumbnail : Maybe String -> Html msg
 renderThumbnail imageUrl =
     case imageUrl of
@@ -67,9 +68,9 @@ renderThumbnail imageUrl =
                 []
 
         Nothing ->
-            div [ class "product-image--empty" ] [
-                icon "location" { size = "x-large", colour = "light-grey", colouring = "outline" }
-            ]
+            div [ class "product-image--empty" ]
+                [ icon "location" { size = "x-large", colour = "light-grey", colouring = "outline" }
+                ]
 
 
 featuredView : ProductListing -> Html msg -> Html msg -> Html msg
@@ -80,8 +81,9 @@ featuredView details ctaContent availableColoursCta =
                 [ text "Featured deal" ]
             ]
         , div [ class "product-listing__main-characteristics" ]
-            [ figure [ class "product-image-container product-image-container--featured" ] [
-                renderThumbnail details.image]
+            [ figure [ class "product-image-container product-image-container--featured" ]
+                [ renderThumbnail details.image
+                ]
             , div [ class "product-listing__details" ]
                 [ div [ class "product-details-container" ]
                     [ figcaption [ class "product-details" ]
