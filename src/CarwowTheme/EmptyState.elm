@@ -5,6 +5,8 @@ module CarwowTheme.EmptyState exposing (emptyState)
 
 # Exports
 
+@docs emptyState
+
 -}
 
 import Html exposing (..)
