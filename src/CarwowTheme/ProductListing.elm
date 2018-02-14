@@ -77,8 +77,8 @@ featuredView : ProductListing -> Html msg -> Html msg -> Html msg
 featuredView details ctaContent availableColoursCta =
     div [ class "product-listing" ]
         [ div [ class "product-listing__ribbon" ]
-            [ span [ class "product-listing__ribbon-text product-listing__ribbon-text--green" ]
-                [ text "Featured deal" ]
+            [ span [ class "product-listing__ribbon-text product-listing__ribbon-text--yellow" ]
+                [ text "Your best price" ]
             ]
         , div [ class "product-listing__main-characteristics" ]
             [ figure [ class "product-image-container product-image-container--featured" ]
