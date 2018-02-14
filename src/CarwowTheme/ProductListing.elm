@@ -5,6 +5,8 @@ module CarwowTheme.ProductListing exposing (featuredView, condensedView, Product
 
 # Exports
 
+@docs featuredView, condensedView, ProductListing, OptionProperties
+
 -}
 
 import Html exposing (..)
@@ -20,7 +22,8 @@ type alias PricingProperties =
     , bottomText : String
     }
 
-
+{-| Placeholder
+-}
 type alias OptionProperties =
     { name : String
     , value : String
@@ -34,7 +37,8 @@ type alias DealerProperties =
     , supplier : String
     }
 
-
+{-| Placeholder
+-}
 type alias ProductListing =
     { id : Int
     , image : Maybe String
@@ -46,7 +50,8 @@ type alias ProductListing =
     , dealer : DealerProperties
     }
 
-
+{-| Placeholder
+-}
 condensedView : ProductListing -> Html msg -> Html msg
 condensedView productDetails ctaContent =
     div [ class "product-listing" ]
@@ -72,7 +77,8 @@ renderThumbnail imageUrl =
                 [ icon "location" { size = "x-large", colour = "light-grey", colouring = "outline" }
                 ]
 
-
+{-| Placeholder
+-}
 featuredView : ProductListing -> Html msg -> Html msg -> Html msg
 featuredView details ctaContent availableColoursCta =
     div [ class "product-listing" ]
