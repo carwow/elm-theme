@@ -14,7 +14,8 @@
         "CarwowTheme.Modal",
         "CarwowTheme.Pagination",
         "CarwowTheme.Tabs",
-        "CarwowTheme.EmptyState"
+        "CarwowTheme.EmptyState",
+        "CarwowTheme.ProductListing"
     ],
     "dependencies": {
         "elm-community/list-extra": "6.1.0 <= v < 7.0.0",
