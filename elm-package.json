@@ -1,5 +1,5 @@
 {
-    "version": "11.1.0",
+    "version": "11.2.0",
     "summary": "Elm helpers to render carwow theme ui components",
     "repository": "https://github.com/carwow/elm-theme.git",
     "license": "BSD3",
