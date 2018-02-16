@@ -5,7 +5,7 @@ module CarwowTheme.ProductListing exposing (featuredView, condensedView, grouped
 
 # Exports
 
-@docs featuredView, condensedView, ProductListing, OptionProperties
+@docs featuredView, condensedView, groupedLeaseDealView, GroupedLeaseDealListing, ProductListing, OptionProperties
 
 -}
 
