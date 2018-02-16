@@ -1,4 +1,4 @@
-module CarwowTheme.ProductListing exposing (featuredView, condensedView, ProductListing, OptionProperties)
+module CarwowTheme.ProductListing exposing (featuredView, condensedView, groupedLeaseDealView, GroupedLeaseDealListing, ProductListing, OptionProperties)
 
 {-| ProductListing
 
@@ -9,6 +9,7 @@ module CarwowTheme.ProductListing exposing (featuredView, condensedView, Product
 
 -}
 
+import Erl exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -49,6 +50,89 @@ type alias ProductListing =
     , price : PricingProperties
     , dealer : DealerProperties
     }
+
+
+{-| Placeholder
+-}
+type alias GroupedLeaseDealListing =
+    { makeName : String
+    , makeSlug : String
+    , monthlyRental : String
+    , includesVAT : Bool
+    , modelName: String
+    , modelSlug: String
+    , thumbnailUrl: Maybe String
+    }
+
+
+{-| Placeholder
+-}
+groupedLeaseDealCTAUrl : GroupedLeaseDealListing -> String
+groupedLeaseDealCTAUrl groupedLeaseDeal =
+    let
+        host =
+            Erl.new
+
+
+        url =
+            Erl.appendPathSegments ["make", groupedLeaseDeal.makeName, "model", groupedLeaseDeal.modelName] host
+
+
+    in
+        Erl.toString url
+
+
+{-| Placeholder
+-}
+groupedLeaseDealView : GroupedLeaseDealListing -> Html msg
+groupedLeaseDealView groupedLeaseDeal =
+    div [ class "product-listing product-listing--grouped" ]
+    [ figure [ class "product-image-container product-image-container--grouped" ]
+        [ a [ attribute "data-interaction" "styleguide_data_attribute", href (groupedLeaseDealCTAUrl groupedLeaseDeal) ]
+            [ renderThumbnail groupedLeaseDeal.thumbnailUrl
+            ]
+        ]
+    , div [ class "product-listing__main-characteristics" ]
+        [ div [ class "product-listing__details" ]
+            [ div [ class "product-details-container" ]
+                [ figcaption [ class "product-details" ]
+                    [ div [ class "product-details__title product-details__title--grouped" ]
+                        [ a [ href (groupedLeaseDealCTAUrl groupedLeaseDeal) ]
+                            [ span [ class "product-title__part" ]
+                                [ text groupedLeaseDeal.makeName ]
+                            , span [ class "product-title__part" ]
+                                [ text groupedLeaseDeal.modelName ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        , div [ class "product-listing__price--grouped" ]
+            [ span [ class "product-price__amount-copy" ]
+                [ text "From" ]
+            , strong [ class "product-price__amount-price" ]
+                [ text groupedLeaseDeal.monthlyRental
+                , span [ class "product-price__amount-price-decimal" ]
+                    [ text ".22" ]
+                , span [ class "product-price__amount-price-text" ]
+                    [ text "/month" ]
+                ]
+            , ul [ class "product-price__additional-info-list" ]
+                [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
+                    (if groupedLeaseDeal.includesVAT == True then
+                        [ text "Inc VAT" ]
+                    else
+                        [ text "Ex VAT" ]
+                    )
+                ]
+            ]
+        ]
+    , div [ class "product-enquiry-grouped-container" ]
+        [ a [ class "btn btn-short btn-action", attribute "data-interaction" "styleguide_data_attribute", href (groupedLeaseDealCTAUrl groupedLeaseDeal) ]
+            [ text "Browse deals" ]
+        ]
+    ]
+
 
 {-| Placeholder
 -}
