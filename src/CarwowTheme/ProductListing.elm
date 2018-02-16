@@ -68,8 +68,8 @@ type alias GroupedLeaseDealListing =
 
 {-| Placeholder
 -}
-groupedLeaseDealView : GroupedLeaseDealListing -> String -> Html msg
-groupedLeaseDealView groupedLeaseDeal url =
+groupedLeaseDealView : GroupedLeaseDealListing -> String -> Html msg -> List (Html msg) -> Html msg
+groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy =
     div [ class "product-listing product-listing--grouped" ]
     [ figure [ class "product-image-container product-image-container--grouped" ]
         [ a [ attribute "data-interaction" "styleguide_data_attribute", href url ]
@@ -103,18 +103,12 @@ groupedLeaseDealView groupedLeaseDeal url =
                 ]
             , ul [ class "product-price__additional-info-list" ]
                 [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
-                    (if groupedLeaseDeal.includesVAT == True then
-                        [ text "Inc VAT" ]
-                    else
-                        [ text "Ex VAT" ]
-                    )
+                    groupedDealVATCopy
                 ]
             ]
         ]
     , div [ class "product-enquiry-grouped-container" ]
-        [ a [ class "btn btn-short btn-action", attribute "data-interaction" "styleguide_data_attribute", href url ]
-            [ text "Browse deals" ]
-        ]
+        [ groupedDealCtaView ]
     ]
 
 
