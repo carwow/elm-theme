@@ -63,6 +63,7 @@ type alias GroupedLeaseDealListing =
     , modelName: String
     , modelSlug: String
     , thumbnailUrl: Maybe String
+    , pricingPeriod: String
     }
 
 
@@ -97,9 +98,9 @@ groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy 
             , strong [ class "product-price__amount-price" ]
                 [ text groupedLeaseDeal.monthlyRentalPounds
                 , span [ class "product-price__amount-price-decimal" ]
-                    [ text ("." ++ groupedLeaseDeal.monthlyRentalPennies) ]
+                    [ text groupedLeaseDeal.monthlyRentalPennies ]
                 , span [ class "product-price__amount-price-text" ]
-                    [ text "/month" ]
+                    [ text groupedLeaseDeal.pricingPeriod ]
                 ]
             , ul [ class "product-price__additional-info-list" ]
                 [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
