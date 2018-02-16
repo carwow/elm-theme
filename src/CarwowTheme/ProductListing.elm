@@ -72,7 +72,7 @@ groupedLeaseDealView : GroupedLeaseDealListing -> String -> Html msg -> List (Ht
 groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy =
     div [ class "product-listing product-listing--grouped" ]
     [ figure [ class "product-image-container product-image-container--grouped" ]
-        [ a [ attribute "data-interaction" "styleguide_data_attribute", href url ]
+        [ a [ href url ]
             [ renderThumbnail groupedLeaseDeal.thumbnailUrl
             ]
         ]
