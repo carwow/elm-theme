@@ -57,7 +57,8 @@ type alias ProductListing =
 type alias GroupedLeaseDealListing =
     { makeName : String
     , makeSlug : String
-    , monthlyRental : String
+    , monthlyRentalPounds : String
+    , monthlyRentalPennies : String
     , includesVAT : Bool
     , modelName: String
     , modelSlug: String
@@ -67,28 +68,11 @@ type alias GroupedLeaseDealListing =
 
 {-| Placeholder
 -}
-groupedLeaseDealCTAUrl : GroupedLeaseDealListing -> String
-groupedLeaseDealCTAUrl groupedLeaseDeal =
-    let
-        host =
-            Erl.new
-
-
-        url =
-            Erl.appendPathSegments ["make", groupedLeaseDeal.makeName, "model", groupedLeaseDeal.modelName] host
-
-
-    in
-        Erl.toString url
-
-
-{-| Placeholder
--}
-groupedLeaseDealView : GroupedLeaseDealListing -> Html msg
-groupedLeaseDealView groupedLeaseDeal =
+groupedLeaseDealView : GroupedLeaseDealListing -> String -> Html msg
+groupedLeaseDealView groupedLeaseDeal url =
     div [ class "product-listing product-listing--grouped" ]
     [ figure [ class "product-image-container product-image-container--grouped" ]
-        [ a [ attribute "data-interaction" "styleguide_data_attribute", href (groupedLeaseDealCTAUrl groupedLeaseDeal) ]
+        [ a [ attribute "data-interaction" "styleguide_data_attribute", href url ]
             [ renderThumbnail groupedLeaseDeal.thumbnailUrl
             ]
         ]
@@ -97,7 +81,7 @@ groupedLeaseDealView groupedLeaseDeal =
             [ div [ class "product-details-container" ]
                 [ figcaption [ class "product-details" ]
                     [ div [ class "product-details__title product-details__title--grouped" ]
-                        [ a [ href (groupedLeaseDealCTAUrl groupedLeaseDeal) ]
+                        [ a [ href url ]
                             [ span [ class "product-title__part" ]
                                 [ text groupedLeaseDeal.makeName ]
                             , span [ class "product-title__part" ]
@@ -111,9 +95,9 @@ groupedLeaseDealView groupedLeaseDeal =
             [ span [ class "product-price__amount-copy" ]
                 [ text "From" ]
             , strong [ class "product-price__amount-price" ]
-                [ text groupedLeaseDeal.monthlyRental
+                [ text groupedLeaseDeal.monthlyRentalPounds
                 , span [ class "product-price__amount-price-decimal" ]
-                    [ text ".22" ]
+                    [ text ("." ++ groupedLeaseDeal.monthlyRentalPennies) ]
                 , span [ class "product-price__amount-price-text" ]
                     [ text "/month" ]
                 ]
@@ -128,7 +112,7 @@ groupedLeaseDealView groupedLeaseDeal =
             ]
         ]
     , div [ class "product-enquiry-grouped-container" ]
-        [ a [ class "btn btn-short btn-action", attribute "data-interaction" "styleguide_data_attribute", href (groupedLeaseDealCTAUrl groupedLeaseDeal) ]
+        [ a [ class "btn btn-short btn-action", attribute "data-interaction" "styleguide_data_attribute", href url ]
             [ text "Browse deals" ]
         ]
     ]
