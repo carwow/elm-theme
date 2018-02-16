@@ -56,8 +56,8 @@ type alias ProductListing =
 type alias GroupedLeaseDealListing =
     { makeName : String
     , makeSlug : String
-    , monthlyRentalPounds : String
-    , monthlyRentalPennies : String
+    , monthlyRentalFirstPart : String
+    , monthlyRentalSecondPart : String
     , includesVAT : Bool
     , modelName: String
     , modelSlug: String
@@ -95,9 +95,9 @@ groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy 
             [ span [ class "product-price__amount-copy" ]
                 [ text "From" ]
             , strong [ class "product-price__amount-price" ]
-                [ text groupedLeaseDeal.monthlyRentalPounds
+                [ text groupedLeaseDeal.monthlyRentalFirstPart
                 , span [ class "product-price__amount-price-decimal" ]
-                    [ text groupedLeaseDeal.monthlyRentalPennies ]
+                    [ text groupedLeaseDeal.monthlyRentalSecondPart ]
                 , span [ class "product-price__amount-price-text" ]
                     [ text groupedLeaseDeal.pricingPeriod ]
                 ]
