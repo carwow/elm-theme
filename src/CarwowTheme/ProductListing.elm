@@ -59,7 +59,7 @@ groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy 
     div [ class "product-listing product-listing--grouped" ]
     [ figure [ class "product-image-container product-image-container--grouped" ]
         [ a [ href url ]
-            [ renderThumbnail groupedLeaseDeal.image
+            [ imagePartialView groupedLeaseDeal.image
             ]
         ]
     , div [ class "product-listing__main-characteristics" ]
@@ -113,8 +113,8 @@ condensedView productDetails ctaContent =
         ]
 
 
-renderThumbnail : Maybe String -> Html msg
-renderThumbnail imageUrl =
+imagePartialView : Maybe String -> Html msg
+imagePartialView imageUrl =
     case imageUrl of
         Just image ->
             img [ class "product-image", src image ]
@@ -136,7 +136,7 @@ featuredView details ctaContent availableColoursCta =
             ]
         , div [ class "product-listing__main-characteristics" ]
             [ figure [ class "product-image-container product-image-container--featured" ]
-                [ renderThumbnail details.image
+                [ imagePartialView details.image
                 ]
             , div [ class "product-listing__details" ]
                 [ div [ class "product-details-container" ]
