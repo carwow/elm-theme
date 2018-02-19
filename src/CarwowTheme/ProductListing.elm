@@ -85,7 +85,7 @@ groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy 
                 , span [ class "product-price__amount-price-decimal" ]
                     [ text (groupedLeaseDeal.price.secondPart |> Maybe.withDefault "") ]
                 , span [ class "product-price__amount-price-text" ]
-                    [ text groupedLeaseDeal.price.period ]
+                    [ text (groupedLeaseDeal.price.period |> Maybe.withDefault "") ]
                 ]
             , ul [ class "product-price__additional-info-list" ]
                 [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
