@@ -1,11 +1,11 @@
-module CarwowTheme.ProductListing exposing (featuredView, condensedView, groupedLeaseDealView, GroupedLeaseDealListing, ProductListing, OptionProperties)
+module CarwowTheme.ProductListing exposing (featuredView, condensedView, groupedLeaseDealView, ProductListing, OptionProperties)
 
 {-| ProductListing
 
 
 # Exports
 
-@docs featuredView, condensedView, groupedLeaseDealView, GroupedLeaseDealListing, ProductListing, OptionProperties
+@docs featuredView, condensedView, groupedLeaseDealView, ProductListing, OptionProperties
 
 -}
 
@@ -40,40 +40,25 @@ type alias DealerProperties =
 {-| Placeholder
 -}
 type alias ProductListing =
-    { id : Int
+    { id : Maybe Int
     , image : Maybe String
     , make : String
     , model : String
-    , derivativeName : String
-    , options : List OptionProperties
+    , derivativeName : Maybe String
+    , options : Maybe (List OptionProperties)
     , price : PricingProperties
-    , dealer : DealerProperties
+    , dealer : Maybe DealerProperties
     }
 
 
 {-| Placeholder
 -}
-type alias GroupedLeaseDealListing =
-    { makeName : String
-    , makeSlug : String
-    , monthlyRentalFirstPart : String
-    , monthlyRentalSecondPart : String
-    , includesVAT : Bool
-    , modelName: String
-    , modelSlug: String
-    , thumbnailUrl: Maybe String
-    , pricingPeriod: String
-    }
-
-
-{-| Placeholder
--}
-groupedLeaseDealView : GroupedLeaseDealListing -> String -> Html msg -> List (Html msg) -> Html msg
+groupedLeaseDealView : ProductListing -> String -> Html msg -> List (Html msg) -> Html msg
 groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy =
     div [ class "product-listing product-listing--grouped" ]
     [ figure [ class "product-image-container product-image-container--grouped" ]
         [ a [ href url ]
-            [ renderThumbnail groupedLeaseDeal.thumbnailUrl
+            [ renderThumbnail groupedLeaseDeal.image
             ]
         ]
     , div [ class "product-listing__main-characteristics" ]
@@ -83,9 +68,9 @@ groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy 
                     [ div [ class "product-details__title product-details__title--grouped" ]
                         [ a [ href url ]
                             [ span [ class "product-title__part" ]
-                                [ text groupedLeaseDeal.makeName ]
+                                [ text groupedLeaseDeal.make ]
                             , span [ class "product-title__part" ]
-                                [ text groupedLeaseDeal.modelName ]
+                                [ text groupedLeaseDeal.model ]
                             ]
                         ]
                     ]
@@ -93,17 +78,17 @@ groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy 
             ]
         , div [ class "product-listing__price--grouped" ]
             [ span [ class "product-price__amount-copy" ]
-                [ text "From" ]
+                [ text groupedLeaseDeal.price.topText ]
             , strong [ class "product-price__amount-price" ]
-                [ text groupedLeaseDeal.monthlyRentalFirstPart
+                [ text groupedLeaseDeal.price.firstPart
                 , span [ class "product-price__amount-price-decimal" ]
-                    [ text groupedLeaseDeal.monthlyRentalSecondPart ]
+                    [ text groupedLeaseDeal.price.secondPart ]
                 , span [ class "product-price__amount-price-text" ]
-                    [ text groupedLeaseDeal.pricingPeriod ]
+                    [ text "/month"]
                 ]
             , ul [ class "product-price__additional-info-list" ]
                 [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
-                    groupedDealVATCopy
+                    [ text groupedLeaseDeal.price.bottomText ]
                 ]
             ]
         ]
@@ -161,11 +146,12 @@ featuredView details ctaContent availableColoursCta =
                             , span [ class "product-title__part" ]
                                 [ text details.model ]
                             , span [ class "product-title__part" ]
-                                [ text details.derivativeName ]
+                                [ text (details.derivativeName |> Maybe.withDefault "") ]
                             ]
                         , availableColoursCta
                         , ul [ class "product-details__specifications-list product-details__specifications-list--leasing" ]
                             ((details.options)
+                                |> Maybe.withDefault []
                                 |> List.map
                                     (\option ->
                                         li [ class "product-details__options-list-item" ]
@@ -202,25 +188,29 @@ featuredView details ctaContent availableColoursCta =
         ]
 
 
-dealerPartialView : DealerProperties -> Html msg
+dealerPartialView : Maybe DealerProperties -> Html msg
 dealerPartialView dealer =
-    div [ class "product-listing__information-items" ]
-        [ div [ class "product-dealer-container" ]
-            [ div [ class "product-dealer__name" ]
-                [ label [ class "product-dealer__link" ]
-                    [ text dealer.name ]
-                , text " - "
-                , span [ class "product-dealer__status" ]
-                    [ text dealer.supplier
+    case dealer of
+        Just dealer ->
+            div [ class "product-listing__information-items" ]
+                [ div [ class "product-dealer-container" ]
+                    [ div [ class "product-dealer__name" ]
+                        [ label [ class "product-dealer__link" ]
+                            [ text dealer.name ]
+                        , text " - "
+                        , span [ class "product-dealer__status" ]
+                            [ text dealer.supplier
+                            ]
+                        ]
+                    , div [ class "product-dealer__location" ]
+                        [ icon "location" { size = "small", colour = "dark-grey", colouring = "outline" }
+                        , span [ class "product-dealer__location-text" ]
+                            [ text dealer.distance ]
+                        ]
                     ]
                 ]
-            , div [ class "product-dealer__location" ]
-                [ icon "location" { size = "small", colour = "dark-grey", colouring = "outline" }
-                , span [ class "product-dealer__location-text" ]
-                    [ text dealer.distance ]
-                ]
-            ]
-        ]
+        Nothing ->
+            text ""
 
 
 pricePartialView : PricingProperties -> Html msg
