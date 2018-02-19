@@ -16,10 +16,11 @@ import CarwowTheme.Icons exposing (icon)
 
 
 type alias PricingProperties =
-    { firstPart : String
-    , secondPart : String
-    , topText : String
-    , bottomText : String
+    { firstPart : Maybe String
+    , secondPart : Maybe String
+    , topText : Maybe String
+    , bottomText : Maybe String
+    , period : Maybe String
     }
 
 {-| Placeholder
@@ -78,17 +79,17 @@ groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy 
             ]
         , div [ class "product-listing__price--grouped" ]
             [ span [ class "product-price__amount-copy" ]
-                [ text groupedLeaseDeal.price.topText ]
+                [ text (groupedLeaseDeal.price.topText |> Maybe.withDefault "") ]
             , strong [ class "product-price__amount-price" ]
-                [ text groupedLeaseDeal.price.firstPart
+                [ text (groupedLeaseDeal.price.firstPart |> Maybe.withDefault "")
                 , span [ class "product-price__amount-price-decimal" ]
-                    [ text groupedLeaseDeal.price.secondPart ]
+                    [ text (groupedLeaseDeal.price.secondPart |> Maybe.withDefault "") ]
                 , span [ class "product-price__amount-price-text" ]
-                    [ text "/month"]
+                    [ text groupedLeaseDeal.price.period ]
                 ]
             , ul [ class "product-price__additional-info-list" ]
                 [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
-                    [ text groupedLeaseDeal.price.bottomText ]
+                    [ text (groupedLeaseDeal.price.bottomText |> Maybe.withDefault "") ]
                 ]
             ]
         ]
@@ -166,15 +167,15 @@ featuredView details ctaContent availableColoursCta =
                 ]
             , div [ class "product-listing__price--featured" ]
                 [ span [ class "product-price__amount-copy" ]
-                    [ text details.price.topText ]
+                    [ text (details.price.topText |> Maybe.withDefault "") ]
                 , strong [ class "product-price__amount-price" ]
-                    [ text details.price.firstPart
+                    [ text (details.price.firstPart |> Maybe.withDefault "")
                     , span [ class "product-price__amount-price-decimal" ]
-                        [ text ("." ++ details.price.secondPart) ]
+                        [ text ("." ++ (details.price.secondPart |> Maybe.withDefault "")) ]
                     ]
                 , ul [ class "product-price__additional-info-list" ]
                     [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
-                        [ text details.price.bottomText
+                        [ text (details.price.bottomText |> Maybe.withDefault "")
                         ]
                     ]
                 ]
@@ -217,15 +218,15 @@ pricePartialView : PricingProperties -> Html msg
 pricePartialView price =
     div [ class "product-listing__price--condensed" ]
         [ span [ class "product-price__amount-copy" ]
-            [ text price.topText ]
+            [ text (price.topText |> Maybe.withDefault "") ]
         , strong [ class "product-price__amount-price" ]
-            [ text price.firstPart
+            [ text (price.firstPart |> Maybe.withDefault "")
             , span [ class "product-price__amount-price-decimal" ]
-                [ text ("." ++ price.secondPart) ]
+                [ text ("." ++ (price.secondPart |> Maybe.withDefault "")) ]
             ]
         , ul [ class "product-price__additional-info-list" ]
             [ li [ class "product-price__additional-info-list-item product-price__additional-info-list-item--saving" ]
-                [ text price.bottomText
+                [ text (price.bottomText |> Maybe.withDefault "")
                 ]
             ]
         ]
