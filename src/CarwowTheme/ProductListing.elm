@@ -54,8 +54,8 @@ type alias ProductListing =
 
 {-| Placeholder
 -}
-groupedLeaseDealView : ProductListing -> String -> Html msg -> List (Html msg) -> Html msg
-groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView groupedDealVATCopy =
+groupedLeaseDealView : ProductListing -> String -> Html msg -> Html msg
+groupedLeaseDealView groupedLeaseDeal url groupedDealCtaView =
     div [ class "product-listing product-listing--grouped" ]
     [ figure [ class "product-image-container product-image-container--grouped" ]
         [ a [ href url ]
@@ -122,7 +122,7 @@ imagePartialView imageUrl =
 
         Nothing ->
             div [ class "product-image--empty" ]
-                [ icon "location" { size = "x-large", colour = "light-grey", colouring = "outline" }
+                [ icon "no_images" { size = "x-large", colour = "light-grey", colouring = "outline" }
                 ]
 
 {-| Placeholder
